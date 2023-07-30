@@ -148,7 +148,7 @@ public class AnimationUIController : DoAnimationController
 
             case TypeAnimation.MoveScaleAT:
 
-                rectTransform.DOMove(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation).
+                rectTransform.DOAnchorPos(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation).
                     SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
                     SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
 
@@ -186,6 +186,18 @@ public class AnimationUIController : DoAnimationController
                     listAux[currentAnimation].timeAnimation).SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
                     SetLoops(listAux[currentAnimation].loops).OnComplete(() => { CallBacks(); StopCoroutine(UpdatePixelPerUnit()); }).SetUpdate(!useTimeScale).
                     OnPlay(() => StartCoroutine(UpdatePixelPerUnit()));
+                break;
+
+
+            case TypeAnimation.UIMoveScaleToPoint:
+
+                rectTransform.DOAnchorPos(listAux[currentAnimation].uiPoint.position, listAux[currentAnimation].timeAnimation).
+                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
+                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
+
+                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
+                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
+                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
                 break;
                 // 2090*
         }

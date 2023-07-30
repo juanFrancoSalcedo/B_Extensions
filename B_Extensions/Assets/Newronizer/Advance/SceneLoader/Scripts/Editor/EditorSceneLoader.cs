@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using B_Extensions.SceneLoader;
+using Newronizer.SceneLoader;
 
 
 #if UNITY_EDITOR

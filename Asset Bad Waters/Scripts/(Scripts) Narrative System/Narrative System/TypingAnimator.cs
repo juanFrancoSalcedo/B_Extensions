@@ -2,83 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using MyBox;
 using UnityEngine.EventSystems;
 
 public class TypingAnimator : MonoBehaviour
 {
-    public TextMeshProUGUI textCompo { get; set; }
+    public TextMeshProUGUI TextCompo => GetComponent<TextMeshProUGUI>();
+    [Tooltip("Less is faster")] [Min(0)]
     [SerializeField] private float speedText= 0.4f;
-    private string fullString;
-    private string currentString;
-    [SerializeField] private bool invokeActionAtEnd;
     public event System.Action OnComplitedText;
-
-    private void OnEnable()
-    {
-        textCompo = GetComponent<TextMeshProUGUI>();
-    }
-
-    public void EraseAndSaveText()
-    {
-        textCompo = GetComponent<TextMeshProUGUI>();
-        fullString = textCompo.text;
-        textCompo.text = "";
-    }
-
-    public void SaveText()
-    {
-        fullString = textCompo.text;
-    }
-
-    public void SetTextFull(string newString)
-    {
-        fullString = newString;
-    }
-
-    public void SetColor(Color newColor)
-    {
-        textCompo.color = newColor;
-    }
-
-    public void SetFont(TMP_FontAsset _fontNew)
-    {
-        textCompo = GetComponent<TextMeshProUGUI>();
-        textCompo.font = _fontNew;
-    }
-
-    public void ShowFullText()
-    {
-         textCompo.text = fullString;
-    }
-
+    Coroutine textAnimation = null;
+    private string bufferText = "";
+    public bool IsCompleted() => textAnimation == null;
     public void StartAnimation()
     {
-        if(gameObject.activeInHierarchy)
-        StartCoroutine(ShowPartial( ));
+        StopAnimation();
+        if (gameObject.activeInHierarchy)
+            textAnimation = StartCoroutine(ShowPartial());
     }
 
-    private IEnumerator ShowPartial()
+    public void StartAnimation(string f)
     {
-        textCompo = GetComponent<TextMeshProUGUI>();
+        StopAnimation();
+        if (gameObject.activeInHierarchy)
+            textAnimation = StartCoroutine(ShowPartial(f));
+    }
 
-        textCompo.text = "";
+    public void StopAnimation() 
+    {
+        if (textAnimation != null)
+            StopCoroutine(textAnimation);
+        textAnimation = null;
+    }
 
-        for (int i = 0; i < fullString.Length; i++)
+    private IEnumerator ShowPartial(string fullText = "")
+    {
+        if (string.IsNullOrEmpty(fullText))
+            fullText = TextCompo.text;
+        bufferText = fullText;
+        string currentString;
+        for (int i = 0; i < fullText.Length; i++)
         {
-            currentString = fullString.Substring(0,i);
-            textCompo.text = currentString;
+            currentString = fullText.Substring(0, i);
+            if (currentString.Equals(" "))
+                continue;
+            TextCompo.text = currentString;
             yield return new WaitForSeconds(speedText);
         }
-        ShowFullText();
-        if(invokeActionAtEnd) OnComplitedText?.Invoke();
+        Complete();
     }
 
-    public void EndAnimation()
+    private void Complete()
     {
-        if (textCompo.text.Length == fullString.Length)
-        {
-            OnComplitedText?.Invoke();
-        }
+        ShowFullText();
+        textAnimation = null;
+        OnComplitedText?.Invoke();
     }
+
+    public void ShowFullText() => TextCompo.text = bufferText;
 }

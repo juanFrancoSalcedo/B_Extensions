@@ -60,6 +60,11 @@ public class EditorDoAnimator : BaseEditorAnimator
             auxArg.targetRotation = EditorGUILayout.Vector3Field("Target Rotation", auxArg.targetRotation);
         }
     }
+
+    protected override void ShowTargetPoint(AnimationAssistant auxArg)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 #endif

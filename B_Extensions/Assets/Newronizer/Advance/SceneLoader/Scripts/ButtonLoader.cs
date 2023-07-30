@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using B_Extensions;
-using B_Extensions.SceneLoader;
+using Newronizer;
+using Newronizer.SceneLoader;
 
 [RequireComponent(typeof(CallerSceneLoader))]
 public class ButtonLoader : BaseButtonAttendant

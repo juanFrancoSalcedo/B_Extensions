@@ -25,6 +25,7 @@ public class EditorDoUIAnimator : BaseEditorAnimator
         ShowTargetRotation(animationAux);
         ShowColor(animationAux);
         ShowPixelPerUnitMultiplier(animationAux);
+        ShowTargetPoint(animationAux);
         animationAux.delay = EditorGUILayout.FloatField("Delay Time", animationAux.delay);
         animationAux.timeAnimation = EditorGUILayout.FloatField("Time Animation", animationAux.timeAnimation);
         animationAux.animationCurve = (Ease)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationCurve);
@@ -55,7 +56,8 @@ public class EditorDoUIAnimator : BaseEditorAnimator
             auxArg.animationType == TypeAnimation.RotateScaleAT ||
             auxArg.animationType == TypeAnimation.MoveScaleAT||
             auxArg.animationType == TypeAnimation.SizeDelta ||
-            auxArg.animationType == TypeAnimation.MoveLocalScaleAT)
+            auxArg.animationType == TypeAnimation.MoveLocalScaleAT ||
+            auxArg.animationType == TypeAnimation.UIMoveScaleToPoint)
         {
             auxArg.targetScale = EditorGUILayout.Vector3Field("Target Scale", auxArg.targetScale);
         }
@@ -68,6 +70,16 @@ public class EditorDoUIAnimator : BaseEditorAnimator
             auxArg.animationType == TypeAnimation.RotateScaleAT)
         {
             auxArg.targetRotation = EditorGUILayout.Vector3Field("Target Rotation", auxArg.targetRotation);
+        }
+    }
+
+    protected override void ShowTargetPoint(AnimationAssistant auxArg)
+    {
+        if (
+            auxArg.animationType == TypeAnimation.UIMoveScaleToPoint ||
+            auxArg.animationType == TypeAnimation.UIMoveToPoint)
+        {
+            auxArg.uiPoint = (RectTransform)EditorGUILayout.ObjectField("Target Transform",auxArg.uiPoint, typeof(RectTransform));
         }
     }
     protected override void ShowColor(AnimationAssistant auxArg)

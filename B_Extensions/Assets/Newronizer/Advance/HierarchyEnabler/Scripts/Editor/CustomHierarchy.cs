@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.Collections.Generic;
 
-namespace B_Extensions.HierarchyStates
+namespace Newronizer.HierarchyStates
 {
 
     [InitializeOnLoad]

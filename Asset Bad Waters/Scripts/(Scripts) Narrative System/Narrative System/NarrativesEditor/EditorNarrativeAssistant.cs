@@ -16,7 +16,7 @@ public class EditorNarrativeAssistant : Editor
     {
         base.OnInspectorGUI();
         assitantController = (CinematicAssistant)target;
-        if (assitantController.control == null)
+        if (assitantController.Control == null)
         {
             EditorGUILayout.HelpBox("Assigns the controller "+assitantController.transform.parent.name, MessageType.Warning);
         }
@@ -35,53 +35,53 @@ public class EditorNarrativeAssistant : Editor
 
     private void SelectInfoToShow()
     {
-        switch (assitantController.missionType)
-        {
-            case TypeMisionTutorial.animationCompleted:
+        //switch (assitantController.missionType)
+        //{
+        //    case TypeCinematicMission.animationCompleted:
 
-                SerializedProperty doAnimator;
-                doAnimator = serializedObject.FindProperty("animatorControl");
-                EditorGUILayout.PropertyField(doAnimator, new GUIContent("Animator Controller"));
-                serializedObject.ApplyModifiedProperties();
+        //        SerializedProperty doAnimator;
+        //        doAnimator = serializedObject.FindProperty("animatorControl");
+        //        EditorGUILayout.PropertyField(doAnimator, new GUIContent("Animator Controller"));
+        //        serializedObject.ApplyModifiedProperties();
 
-                if (GUILayout.Button("[Add Animation]"))
-                {
-                    assitantController.animationsMission.Add(new AnimationAssistant());
-                }
-                ShowAnimationList();
-                break;
+        //        if (GUILayout.Button("[Add Animation]"))
+        //        {
+        //            assitantController.animationsMission.Add(new AnimationAssistant());
+        //        }
+        //        ShowAnimationList();
+        //        break;
 
-            case TypeMisionTutorial.buttonClicked:
-                SerializedProperty buttonUI;
-                buttonUI = serializedObject.FindProperty("buttonMision");
-                EditorGUILayout.PropertyField(buttonUI,new GUIContent("Button Mission"));
-                serializedObject.ApplyModifiedProperties();
-                break;
+        //    case TypeCinematicMission.buttonClicked:
+        //        SerializedProperty buttonUI;
+        //        buttonUI = serializedObject.FindProperty("buttonMision");
+        //        EditorGUILayout.PropertyField(buttonUI,new GUIContent("Button Mission"));
+        //        serializedObject.ApplyModifiedProperties();
+        //        break;
 
-            case TypeMisionTutorial.textCompleted:
-                assitantController.textToShow = EditorGUILayout.TextArea(assitantController.textToShow,GUILayout.MinHeight(40));
-                SerializedProperty textAnimator;
-                textAnimator = serializedObject.FindProperty("typingObject");
-                EditorGUILayout.PropertyField(textAnimator, new GUIContent("Typing Animator"));
-                serializedObject.ApplyModifiedProperties();
-                break;
+        //    case TypeCinematicMission.textCompleted:
+        //        assitantController.textToShow = EditorGUILayout.TextArea(assitantController.textToShow, GUILayout.MinHeight(40));
+        //        //SerializedProperty textAnimator;
+        //        //textAnimator = serializedObject.FindProperty("typingObject");
+        //        //EditorGUILayout.PropertyField(textAnimator, new GUIContent("Typing Animator"));
+        //        serializedObject.ApplyModifiedProperties();
+        //        break;
 
-            case TypeMisionTutorial.textEquals:
+        //    case TypeCinematicMission.textEquals:
                 
-                break;
+        //        break;
 
-            case TypeMisionTutorial.dialogue:
-                assitantController.textToShow = EditorGUILayout.TextArea(assitantController.textToShow, GUILayout.MinHeight(40));
-                assitantController.characterSide = (SideCharacter)EditorGUILayout.EnumPopup("Side Character", assitantController.characterSide);
-                assitantController.languageDialogue = (LanguageCharacter)EditorGUILayout.EnumPopup("Language Fantas", assitantController.languageDialogue);
-                assitantController.characterApeear = EditorGUILayout.Toggle("Character Appears", assitantController.characterApeear);
+        //    case TypeCinematicMission.dialogue:
+        //        assitantController.textToShow = EditorGUILayout.TextArea(assitantController.textToShow, GUILayout.MinHeight(40));
+        //        assitantController.characterSide = (SideCharacter)EditorGUILayout.EnumPopup("Side Character", assitantController.characterSide);
+        //        assitantController.languageDialogue = (LanguageCharacter)EditorGUILayout.EnumPopup("Language Fantas", assitantController.languageDialogue);
+        //        assitantController.characterApeear = EditorGUILayout.Toggle("Character Appears", assitantController.characterApeear);
 
-                SerializedProperty scriptable;
-                scriptable = serializedObject.FindProperty("characterStats");
-                EditorGUILayout.PropertyField(scriptable, new GUIContent("Character Settings"));
-                serializedObject.ApplyModifiedProperties();
+        //        SerializedProperty scriptable;
+        //        scriptable = serializedObject.FindProperty("characterStats");
+        //        EditorGUILayout.PropertyField(scriptable, new GUIContent("Character Settings"));
+        //        serializedObject.ApplyModifiedProperties();
 
-                break;
+        //        break;
 
             //case TypeMisionTutorial.chapterReader:
 
@@ -90,35 +90,35 @@ public class EditorNarrativeAssistant : Editor
             //    EditorGUILayout.PropertyField(chapterRead, new GUIContent("Chapter Checker"));
             //    serializedObject.ApplyModifiedProperties();
             //    break;
-        }
+        //}
     }
 
     private void ShowAnimationList()
     {
-        foreach (AnimationAssistant aux in assitantController.animationsMission)
-        {
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("" + assitantController.animationsMission.IndexOf(aux) + "[" + aux.animationType.ToString() + "]"))
-            {
-                aux.DisplayAnimationAux();
-            }
+        //foreach (AnimationAssistant aux in assitantController.animationsMission)
+        //{
+        //    GUILayout.BeginHorizontal();
+        //    if (GUILayout.Button("" + assitantController.animationsMission.IndexOf(aux) + "[" + aux.animationType.ToString() + "]"))
+        //    {
+        //        aux.DisplayAnimationAux();
+        //    }
 
-            if (GUILayout.Button("<", GUILayout.Width(30)))
-            {
-                Organizer<AnimationAssistant>.MoveIndexOfAList(aux, assitantController.animationsMission, true);
-            }
+        //    if (GUILayout.Button("<", GUILayout.Width(30)))
+        //    {
+        //        Organizer<AnimationAssistant>.MoveIndexOfAList(aux, assitantController.animationsMission, true);
+        //    }
 
-            if (GUILayout.Button(">", GUILayout.Width(30)))
-            {
-                Organizer<AnimationAssistant>.MoveIndexOfAList(aux, assitantController.animationsMission, true);
-            }
-            GUILayout.EndHorizontal();
+        //    if (GUILayout.Button(">", GUILayout.Width(30)))
+        //    {
+        //        Organizer<AnimationAssistant>.MoveIndexOfAList(aux, assitantController.animationsMission, true);
+        //    }
+        //    GUILayout.EndHorizontal();
 
-            if (aux.display)
-            {
-                ShowDataAnimation(aux);
-            }
-        }
+        //    if (aux.display)
+        //    {
+        //        ShowDataAnimation(aux);
+        //    }
+        //}
     }
     
     private void ShowDataAnimation(AnimationAssistant animationAux)

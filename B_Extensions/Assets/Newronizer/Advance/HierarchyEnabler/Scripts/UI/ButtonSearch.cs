@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace B_Extensions.HierarchyStates
+namespace Newronizer.HierarchyStates
 {
     public class ButtonSearch : BaseButtonAttendant
     {

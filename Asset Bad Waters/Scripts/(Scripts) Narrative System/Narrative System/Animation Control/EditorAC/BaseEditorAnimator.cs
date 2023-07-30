@@ -63,6 +63,7 @@ public abstract class BaseEditorAnimator : Editor
     protected abstract void ShowTargetPosition(AnimationAssistant auxArg);
     protected abstract void ShowTargetScale(AnimationAssistant auxArg);
     protected abstract void ShowTargetRotation(AnimationAssistant auxArg);
+    protected abstract void ShowTargetPoint(AnimationAssistant auxArg);
     protected virtual void ShowColor(AnimationAssistant auxArg){}
 }
 

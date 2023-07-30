@@ -137,6 +137,7 @@ public class AnimationAssistant
     public Ease animationCurve;
     public bool playOnAwake;
     public Transform worldPoint;
+    public RectTransform uiPoint;
     public Color colorTarget;
     public bool display;
     public int loops;

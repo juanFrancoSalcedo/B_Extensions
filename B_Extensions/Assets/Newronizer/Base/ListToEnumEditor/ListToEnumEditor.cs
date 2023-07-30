@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace B_Extensions
+namespace Newronizer
 {
     public class ListToEnumEditor : PropertyAttribute
     {

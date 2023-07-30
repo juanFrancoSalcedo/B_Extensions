@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace B_Extensions.HierarchyStates
+namespace Newronizer.HierarchyStates
 {
     public class HierarchyEditor : EditorWindow
     {
@@ -31,9 +31,16 @@ namespace B_Extensions.HierarchyStates
 
             if (GUILayout.Button("Apply Color"))
             {
-                if (!Selection.activeGameObject.GetComponent<ColorHierarchySetter>())
-                    Selection.activeGameObject.AddComponent(typeof(ColorHierarchySetter));
-                Selection.activeGameObject.GetComponent<ColorHierarchySetter>().colorInHierarchy = bufferColor;
+                foreach (var item in Selection.gameObjects)
+                {
+
+                    item.AddComponent(typeof(ColorHierarchySetter));
+                    item.GetComponent<ColorHierarchySetter>().colorInHierarchy = bufferColor;
+                }
+
+
+                //if (!Selection.activeGameObject.GetComponent<ColorHierarchySetter>())
+                    //Selection.activeGameObject.GetComponent<ColorHierarchySetter>().colorInHierarchy = bufferColor;
                 this.Close();
             }
 

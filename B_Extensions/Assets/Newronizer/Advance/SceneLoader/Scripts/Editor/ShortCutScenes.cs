@@ -6,13 +6,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-namespace B_Extensions.SceneLoader
+namespace Newronizer.SceneLoader
 { 
     public class ShortCutScenes
     {
         #if UNITY_EDITOR
     
-        [MenuItem("B_Extensions/SceneLoader/Previous Scene #%LEFT")]
+        [MenuItem("Newronizer/SceneLoader/Previous Scene #%LEFT")]
         public static void DisplayTwo()
         {
             EditorSceneManager.OpenScene(WindowSceneSelection.previousScenePath);

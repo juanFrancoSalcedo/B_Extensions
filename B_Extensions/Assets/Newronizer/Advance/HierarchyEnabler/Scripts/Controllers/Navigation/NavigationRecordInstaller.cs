@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace B_Extensions.HierarchyStates
+namespace Newronizer.HierarchyStates
 {
     public class NavigationRecordInstaller : MonoBehaviour
     {

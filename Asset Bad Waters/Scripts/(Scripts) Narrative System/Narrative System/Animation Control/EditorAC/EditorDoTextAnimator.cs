@@ -64,6 +64,11 @@ public class EditorDoTextAnimator : BaseEditorAnimator
             auxArg.colorTarget = EditorGUILayout.ColorField("Color Target", auxArg.colorTarget);
         }
     }
+
+    protected override void ShowTargetPoint(AnimationAssistant auxArg)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 #endif

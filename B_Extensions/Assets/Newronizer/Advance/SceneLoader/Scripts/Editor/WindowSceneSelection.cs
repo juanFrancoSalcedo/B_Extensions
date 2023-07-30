@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
 
-namespace B_Extensions.SceneLoader
+namespace Newronizer.SceneLoader
 {
     public class WindowSceneSelection : EditorWindow
     {
 #if UNITY_EDITOR
-        [MenuItem("B_Extensions/SceneLoader/Window Scenes %F1")]
+        [MenuItem("Newronizer/SceneLoader/Window Scenes %F1")]
         public static void DisplayOne() => WindowSceneSelection.OpenWindow();
         public static string previousScenePath;
         private int tab = 0;

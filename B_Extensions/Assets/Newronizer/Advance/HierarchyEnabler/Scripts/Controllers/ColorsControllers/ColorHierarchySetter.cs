@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace B_Extensions.HierarchyStates
+namespace Newronizer.HierarchyStates
 {
     [DisallowMultipleComponent]
     public class ColorHierarchySetter : MonoBehaviour
@@ -19,3 +19,4 @@ namespace B_Extensions.HierarchyStates
 
     }
 }
+

@@ -4,13 +4,13 @@ using UnityEngine;
 
 
 
-namespace B_Extensions
+namespace Newronizer
 {
 #if UNITY_EDITOR
 
     public class WindowSearchPlayerPrefsPosible : EditorWindow
     {
-        [MenuItem("B_Extensions/PlayerPrefs Elimination")]
+        [MenuItem("Newronizer/PlayerPrefs Elimination")]
         public static void ShowWindow()
         {
             //PlayerPrefs.SetString(KeyStorage.PlayersTest, "Hola Mundo");

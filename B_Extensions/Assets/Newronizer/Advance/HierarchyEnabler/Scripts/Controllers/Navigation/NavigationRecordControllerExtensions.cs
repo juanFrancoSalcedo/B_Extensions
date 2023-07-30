@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace B_Extensions.HierarchyStates
+namespace Newronizer.HierarchyStates
 {
     public static class NavigationRecordControllerExtensions 
     {
