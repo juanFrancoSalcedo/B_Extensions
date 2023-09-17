@@ -19,4 +19,3 @@ namespace Newronizer.HierarchyStates
 
     }
 }
-
