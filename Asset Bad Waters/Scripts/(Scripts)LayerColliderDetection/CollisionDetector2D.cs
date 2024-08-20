@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
-public class CollisionDetector: MonoBehaviour
+public class CollisionDetector2D: MonoBehaviour
 {
     public LayerMask detectionLayer;
     [SerializeField] private UnityEvent onCollisionEnter;
     [SerializeField] private UnityEvent onCollisionStay;
     [SerializeField] private UnityEvent onCollisionExit;
-    public event System.Action<Collision> OnCollisionEntered;
-    public event System.Action<Collision> OnCollisionStayed;
-    public event System.Action<Collision> OnCollisionExited;
+    public event System.Action<Collision2D> OnCollisionEntered;
+    public event System.Action<Collision2D> OnCollisionStayed;
+    public event System.Action<Collision2D> OnCollisionExited;
 
 
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (LayerDetection.DetectContainedLayers(detectionLayer, other.gameObject))
         {
@@ -23,7 +21,7 @@ public class CollisionDetector: MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision other)
+    private void OnCollisionStay2D(Collision2D other)
     {
         if (LayerDetection.DetectContainedLayers(detectionLayer, other.gameObject))
         {
@@ -33,7 +31,7 @@ public class CollisionDetector: MonoBehaviour
 
     }
 
-    private void OnCollisionExit(Collision other)
+    private void OnCollisionExit2D(Collision2D other)
     {
         if (LayerDetection.DetectContainedLayers(detectionLayer, other.gameObject))
         {

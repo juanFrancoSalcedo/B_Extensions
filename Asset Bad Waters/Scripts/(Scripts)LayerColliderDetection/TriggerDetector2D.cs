@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
-
-public class TriggerDetector: MonoBehaviour
+public class TriggerDetector2D : MonoBehaviour
 {
     public LayerMask detectionLayer;
     [SerializeField] private UnityEvent onTriggerEnter;
@@ -14,17 +11,20 @@ public class TriggerDetector: MonoBehaviour
     public event System.Action<Transform> OnTriggerExited;
     public event System.Action<Transform> OnTriggerStayed;
 
-    private void OnTriggerEnter(Collider other)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (LayerDetection.DetectContainedLayers(detectionLayer, other.gameObject))
+        if (LayerDetection.DetectContainedLayers(detectionLayer, collision.gameObject))
         {
-            OnTriggerEntered?.Invoke(other.transform);
+            OnTriggerEntered?.Invoke(collision.transform);
             onTriggerEnter?.Invoke();
         }
     }
 
-    private void OnTriggerStay(Collider other)
+
+    private void OnTriggerStay2D(Collider2D other)
     {
+        
         if (LayerDetection.DetectContainedLayers(detectionLayer, other.gameObject))
         {
             OnTriggerStayed?.Invoke(other.transform);
@@ -32,7 +32,7 @@ public class TriggerDetector: MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (LayerDetection.DetectContainedLayers(detectionLayer, other.gameObject))
         {
@@ -41,3 +41,4 @@ public class TriggerDetector: MonoBehaviour
         }
     }
 }
+
