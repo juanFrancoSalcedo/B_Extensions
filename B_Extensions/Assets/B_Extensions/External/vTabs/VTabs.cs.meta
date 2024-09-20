@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Asset Bad Waters/Scripts/(Scripts) Narrative System/Narrative System/Acelerator.cs.meta
+guid: f3b37c612d896cc4ebe63e94efbeed8b
+========
+guid: fc570418b0cd44cd49a39403a3ba1cf7
+>>>>>>>> 9c4bc29519a438132e66a381b77b02e5aa7eca6e:B_Extensions/Assets/B_Extensions/External/vTabs/VTabs.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 245620
+  packageName: vTabs
+  packageVersion: 1.0.14
+  assetPath: Assets/vTabs/VTabs.cs
+  uploadId: 651589
