@@ -69,7 +69,7 @@ public class AnimationController : DoAnimationController
                 break;
 
             case TypeAnimation.Rotate:
-                transform.DORotate(listAux[currentAnimation].targetRotation, listAux[currentAnimation].timeAnimation).
+                transform.DORotate(listAux[currentAnimation].targetRotation, listAux[currentAnimation].timeAnimation, RotateMode.FastBeyond360).
                     SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
                     OnComplete(CallBacks).SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale);
                 break;
