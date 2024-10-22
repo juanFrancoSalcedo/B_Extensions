@@ -1,185 +1,70 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using System;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public float initTime;
-    public bool rest;
-    public event System.Action<string,float> OnCalculatedTimeString;
-    public bool stopTimer { get; set; } = false;
-    public TypeTimer timerType;
-    public enum TypeTimer
+    [SerializeField] float targetTime = 0;
+    float timeRemaing = 0;
+    [SerializeField] private bool reduce = false;
+    public event Action<string> OnUpdateTime;
+    public event Action OnTimeCompleted;
+    Coroutine coroutineTimer;
+    [SerializeField] private UnityEvent onStartTimer;
+    [SerializeField] private UnityEvent onStopTimer;
+    [SerializeField] private UnityEvent onTimeCompleted;
+
+    public void StopTimer()
     {
-        Second,
-        Thousandths,
-        Hours,
-        Minutes
+        if(coroutineTimer != null)
+            StopCoroutine(coroutineTimer);
+        onStopTimer?.Invoke();
     }
 
-    //FORMULA PARA SABER CUANTOS TICKmILISECONDSsON
-    //3600*1000*nHoras
-    // 3600*1000*12 = 43200000
-
-    //https://www.youtube.com/watch?v=Yoh6owRXCXA
-
-
-    private void Update()
+    public void StartTimer() 
     {
-        if (stopTimer) { return; }
-
-        if (rest)
-        {
-            initTime -= Time.deltaTime;
-        }
+        if (reduce)
+            timeRemaing = targetTime;
         else
-        {
-            initTime += Time.deltaTime;
-        }
+            timeRemaing = 0;
 
-        CheckTimerType();
+        if (coroutineTimer == null)
+            coroutineTimer = StartCoroutine(DoTimer());
+        onStartTimer?.Invoke();
     }
 
-    private void CheckTimerType()
+    public void RestartTimer() 
     {
-        switch (timerType)
-        {
-            case TypeTimer.Hours:
-                OnCalculatedTimeString?.Invoke(GetTimeHours(initTime), initTime);
-                break;
-            case TypeTimer.Minutes:
-                OnCalculatedTimeString?.Invoke(GetTimeMinutes(initTime), initTime);
-                break;
-            case TypeTimer.Second:
-                OnCalculatedTimeString?.Invoke(GetTimeOnlySeconds(initTime),initTime);
-                break;
-            case TypeTimer.Thousandths:
-                OnCalculatedTimeString?.Invoke(GetTimeThousandths(initTime),initTime);
-                break;
-        }
+        coroutineTimer = null;
+        StartTimer();
     }
 
-
-    protected string GetTimeHours(float time)
+    private IEnumerator DoTimer()
     {
-        string strHoras = "";
-        int horas = (int)time / 3600;
+        float amount = (reduce) ? -1 : 1;
 
-        strHoras = "" + horas;
-
-        if (horas < 10)
-        {
-            strHoras = "0" + horas;
+        while (!ReachTime())
+        { 
+            var secs = TimeSpan.FromSeconds(timeRemaing);
+            timeRemaing += (amount *Time.deltaTime);
+            OnUpdateTime?.Invoke(secs.ToString("mm\\:ss"));
+            // return null is better cause wait til next frame
+            yield return null;
         }
-        if (horas >= 24)
-        {
-            strHoras = "paila";
-        }
-        if (horas < 1)
-        {
-            strHoras = "00";
-        }
+        coroutineTimer = null;
+        onTimeCompleted?.Invoke();
+        OnTimeCompleted?.Invoke();
+    }
 
-        string strMin = "";
-        int min = (int)time / 60;
-        strMin = "" + min;
-
-        if (min < 10)
-        {
-            strMin = "0" + min;
-        }
-        if (min >= 60)
-        {
-            int bufMin = (int)min - horas * 60;
-
-            if (bufMin < 10)
-            {
-                strMin = "0" + bufMin;
-            }
-            else
-            {
-                strMin = "" + bufMin;
-            }
-        }
-
-        string strSec = "";
-        int sec = (int)time - (min * 60);
-
-        if (sec < 10)
-        {
-            strSec = "0" + sec;
-        }
+    public bool ReachTime() 
+    {
+        if(reduce)
+            return timeRemaing <= 0;
         else
-        {
-            strSec = "" + sec;
-        }
-        return strHoras + ":" + strMin + ":" + strSec;
-    }
-
-    protected string GetTimeMinutes(float time)
-    {
-
-        string strMin = "";
-        int min = (int)time / 60;
-        strMin = "" + min;
-
-        if (min < 10)
-        {
-            strMin = "0" + min;
-        }
-        if (min >= 60)
-        {
-            print("Paila");
-        }
-
-        string strSec = "";
-        int sec = (int)time - (min * 60);
-
-        if (sec < 10)
-        {
-            strSec = "0" + sec;
-        }
-        else
-        {
-            strSec = "" + sec;
-        }
-
-        return strMin+ ":"+strSec;
-    }
-
-    protected string GetTimeOnlySeconds(float time)
-    {
-        int min = (int)time / 60;
-        string strSec = "";
-        int sec = (int)time - (min * 60);
-
-        if (sec < 10)
-        {
-            strSec = "0" + sec;
-        }
-        else
-        {
-            strSec = "" + sec;
-        }
-
-        return strSec;
-    }
-
-    protected string GetTimeThousandths(float time)
-    {
-        int min = (int)time / 60;
-        string strSec = "";
-        int sec = (int)time - (min * 60);
-
-        if (sec < 10)
-        {
-            strSec = "0" + sec;
-        }
-        else
-        {
-            strSec = "" + sec;
-        }
-        return time.ToString("0.000");
+            return timeRemaing >= targetTime;
     }
 }
+
+
