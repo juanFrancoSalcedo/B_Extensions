@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
+using static UnityEngine.GraphicsBuffer;
 
 public class AnimationUIController : DoAnimationController
 {
     private RectTransform rectTransform;
     private Image image;
     private Sprite spriteOriginal;
-    
+
     private new void OnEnable()
     {
         rectTransform = GetComponent<RectTransform>();
         image = GetComponent<Image>();
         originPosition = rectTransform.anchoredPosition;
         originScale = rectTransform.localScale;
-        if(image) spriteOriginal = image.sprite;
+        if (image) spriteOriginal = image.sprite;
         base.OnEnable();
     }
 
@@ -41,165 +42,143 @@ public class AnimationUIController : DoAnimationController
         }
 
         Sequence sequence = DOTween.Sequence();
-        
-        switch (listAux[currentAnimation].animationType)
+        var currentAux = listAux[currentAnimation];
+        var delay = currentAux.delay;
+        var timeAnim = currentAux.timeAnimation;
+        RectTransform atractor = null;
+        if (currentAux.atractor != null)
+            atractor = (RectTransform)currentAux.atractor.transform;
+        else
+            atractor = (RectTransform)transform;
+
+        var targetPos = (currentAux.atractor != null) ? (Vector3)atractor.anchoredPosition : currentAux.targetPosition;
+
+        if (currentAux.useSequence)
         {
-            case TypeAnimation.Move:
-                rectTransform.DOAnchorPos(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation, false).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
+            if (currentAux.displayPosition)
+                sequence.Append(rectTransform.DOLocalMove(targetPos, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displayScale)
+                sequence.Append(rectTransform.DOScale(currentAux.targetScale, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displayTexture)
+                sequence.Append(image.DOFade(1, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(delegate { CallBacks(); image.sprite = currentAux.spriteShift; }).SetUpdate(!useTimeScale));
+            if (currentAux.displayRotation)
+                sequence.Append(rectTransform.DORotate(currentAux.targetRotation, timeAnim, RotateMode.LocalAxisAdd).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displayColor)
+                sequence.Append(image.DOColor(currentAux.colorTarget, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displaySizeDelta)
+                sequence.Append(rectTransform.DOSizeDelta(currentAux.targetSizeDelta, timeAnim).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
 
-            case TypeAnimation.Scale:
-                sequence.Append(rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay)).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
+            if (currentAux.displayPixelMultiplier)
+                sequence.Append(DOTween.To(() => this.image.pixelsPerUnitMultiplier, juu => this.image.pixelsPerUnitMultiplier = juu, currentAux.pixelMultiplier,
+                    currentAux.timeAnimation).SetEase(currentAux.animationCurve).SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).OnComplete(() => { CallBacks(); StopCoroutine(UpdatePixelPerUnit()); }).SetUpdate(!useTimeScale).
+                    OnPlay(() => StartCoroutine(UpdatePixelPerUnit())));
 
-            case TypeAnimation.FadeOutScaleAT:
-
-                image.DOFade(0, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale);
-
-                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-
-                break;
-
-            case TypeAnimation.FadeInScaleAT:
-
-                image.DOFade(1, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
-
-                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-
-                break;
-
-            case TypeAnimation.SwitchSprite:
-                if (ReferenceEquals(image.sprite, spriteOriginal))
+            if (currentAux.displayFade)
+            {
+                if (currentAux.applyOnCanvasGroup)
                 {
-                    image.DOColor(image.color, listAux[currentAnimation].timeAnimation).SetDelay(listAux[currentAnimation].delay).
-                    OnComplete(delegate { image.sprite = listAux[currentAnimation].spriteShift; CallBacks(); });
+                    var canvasGroup = GetComponent<CanvasGroup>();
+                    sequence.Append(DOTween.To(() => canvasGroup.alpha, juu => canvasGroup.alpha = juu, currentAux.fadeTarget, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).OnComplete(CallBacks).SetUpdate(!useTimeScale));
+
                 }
                 else
                 {
-                    image.DOColor(image.color, listAux[currentAnimation].timeAnimation).SetDelay(listAux[currentAnimation].delay).
-                    OnComplete(delegate { image.sprite = spriteOriginal; CallBacks(); });
+                    sequence.Append(image.DOFade(currentAux.fadeTarget, currentAux.timeAnimation).
+                        SetEase(currentAux.animationCurve).SetDelay(currentAux.delay).
+                        SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
                 }
-                break;
+            }
+        }
+        else
+        {
+            if (currentAux.displayPosition)
+                sequence.Insert(delay, rectTransform.DOLocalMove(targetPos, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).
+                    SetUpdate(!useTimeScale));
 
-            case TypeAnimation.ChangeSprite:
-                image.DOColor(image.color, listAux[currentAnimation].timeAnimation).SetDelay(listAux[currentAnimation].delay).
-                    OnComplete( delegate { image.sprite = listAux[currentAnimation].spriteShift; CallBacks();});
-                break;
+            if (currentAux.displayScale)
+                sequence.Insert(delay, rectTransform.DOScale(currentAux.targetScale, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displayTexture)
+                sequence.Insert(delay, image.DOFade(1, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(delegate { CallBacks(); image.sprite = currentAux.spriteShift; }).SetUpdate(!useTimeScale));
+            if (currentAux.displayRotation)
+                sequence.Insert(delay, rectTransform.DORotate(currentAux.targetRotation, timeAnim, RotateMode.LocalAxisAdd).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displayColor)
+                sequence.Insert(delay, image.DOColor(currentAux.colorTarget, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
+            if (currentAux.displaySizeDelta)
+                sequence.Insert(delay, rectTransform.DOSizeDelta(currentAux.targetSizeDelta, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).
+                    OnComplete(CallBacks).SetUpdate(!useTimeScale));
 
-            case TypeAnimation.FadeIn:
-                image.DOFade(1, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
+            if (currentAux.displayPixelMultiplier)
+                sequence.Insert(delay, DOTween.To(() => image.pixelsPerUnitMultiplier, juu => image.pixelsPerUnitMultiplier = juu, currentAux.pixelMultiplier,
+                    currentAux.timeAnimation).SetEase(currentAux.animationCurve).SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops).OnComplete(() => { CallBacks(); StopCoroutine(UpdatePixelPerUnit()); }).SetUpdate(!useTimeScale).
+                    OnPlay(() => StartCoroutine(UpdatePixelPerUnit())));
 
-            case TypeAnimation.FadeOut:
-                image.DOFade(0, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
+            if (currentAux.displayFade)
+            {
+                if (currentAux.applyOnCanvasGroup)
+                {
+                    var canvasGroup = GetComponent<CanvasGroup>();
+                    sequence.Insert(delay, DOTween.To(() => canvasGroup.alpha, juu => canvasGroup.alpha = juu, currentAux.fadeTarget, timeAnim).
+                        SetEase(currentAux.animationCurve).
+                        SetDelay(currentAux.delay).
+                        SetLoops(currentAux.loops).OnComplete(CallBacks).SetUpdate(!useTimeScale));
 
-            case TypeAnimation.ColorChange:
-                image.DOColor(listAux[currentAnimation].colorTarget,listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
-
-            case TypeAnimation.Rotate:
-                rectTransform.DORotate(listAux[currentAnimation].targetRotation, listAux[currentAnimation].timeAnimation, RotateMode.FastBeyond360).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
-
-            case TypeAnimation.RotateScaleAT:
-
-                rectTransform.DORotate(listAux[currentAnimation].targetRotation, listAux[currentAnimation].timeAnimation, RotateMode.FastBeyond360).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
-
-                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-
-                break;
-
-            case TypeAnimation.MoveLocalScaleAT:
-
-                rectTransform.DOLocalMove(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
-
-                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-
-                break;
-
-            case TypeAnimation.MoveScaleAT:
-
-                rectTransform.DOAnchorPos(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
-
-                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-
-                break;
-
-            case TypeAnimation.MoveLocalFadeInAT:
-
-                image.DOFade(1, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
-
-                rectTransform.DOLocalMove(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-
-                break;
-
-            case TypeAnimation.SizeDelta:
-
-                rectTransform.DOSizeDelta(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale);
-
-                rectTransform.DOAnchorPos(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale); ;
-
-                break;
-            case TypeAnimation.PixelPerUnitMultiplier:
-                DOTween.To(() => this.image.pixelsPerUnitMultiplier, juu => this.image.pixelsPerUnitMultiplier = juu, listAux[currentAnimation].pixelMultiplier,
-                    listAux[currentAnimation].timeAnimation).SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(() => { CallBacks(); StopCoroutine(UpdatePixelPerUnit()); }).SetUpdate(!useTimeScale).
-                    OnPlay(() => StartCoroutine(UpdatePixelPerUnit()));
-                break;
-
-
-            case TypeAnimation.UIMoveScaleToPoint:
-
-                rectTransform.DOAnchorPos(listAux[currentAnimation].uiPoint.position, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).SetUpdate(!useTimeScale); ;
-
-                rectTransform.DOScale(listAux[currentAnimation].targetScale, listAux[currentAnimation].timeAnimation).
-                    SetEase(listAux[currentAnimation].animationCurve).SetDelay(listAux[currentAnimation].delay).
-                    SetLoops(listAux[currentAnimation].loops).OnComplete(CallBacks).SetUpdate(!useTimeScale);
-                break;
-                // 2090*
+                }
+                else
+                {
+                    sequence.Insert(delay, image.DOFade(currentAux.fadeTarget, currentAux.timeAnimation).
+                        SetEase(currentAux.animationCurve).SetDelay(currentAux.delay).
+                        SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
+                }
+            }
         }
     }
 

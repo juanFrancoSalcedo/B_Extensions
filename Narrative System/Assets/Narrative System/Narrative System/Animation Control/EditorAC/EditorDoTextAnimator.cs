@@ -19,7 +19,6 @@ public class EditorDoTextAnimator : BaseEditorAnimator
 
     protected override void ShowData(AnimationAssistant animationAux)
     {
-        animationAux.animationType = (TypeAnimation)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationType);
         ShowTargetPosition(animationAux);
         ShowTargetScale(animationAux);
         ShowTargetRotation(animationAux);
@@ -33,41 +32,36 @@ public class EditorDoTextAnimator : BaseEditorAnimator
 
     protected override void ShowTargetPosition(AnimationAssistant auxArg)
     {
-        if (auxArg.animationType == TypeAnimation.Move || auxArg.animationType == TypeAnimation.MoveReturnOrigin || auxArg.animationType == TypeAnimation.MoveLocal)
-        {
-            auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
-        }
+        //if (auxArg.animationType == TypeAnimation.Move || auxArg.animationType == TypeAnimation.MoveReturnOrigin || auxArg.animationType == TypeAnimation.MoveLocal)
+        //{
+        //    auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
+        //}
     }
 
     protected override void ShowTargetScale(AnimationAssistant auxArg)
     {
-        if (auxArg.animationType == TypeAnimation.Scale || auxArg.animationType == TypeAnimation.ScaleReturnOriginScale ||
-            auxArg.animationType == TypeAnimation.RotateScaleAT)
-        {
-            auxArg.targetScale = EditorGUILayout.Vector3Field("Target Scale", auxArg.targetScale);
-        }
+        //if (auxArg.animationType == TypeAnimation.Scale || auxArg.animationType == TypeAnimation.ScaleReturnOriginScale ||
+        //    auxArg.animationType == TypeAnimation.RotateScaleAT)
+        //{
+        //    auxArg.targetScale = EditorGUILayout.Vector3Field("Target Scale", auxArg.targetScale);
+        //}
     }
 
     protected override void ShowTargetRotation(AnimationAssistant auxArg)
     {
-        if (auxArg.animationType == TypeAnimation.Rotate || auxArg.animationType == TypeAnimation.RotateBackOrigin
-            || auxArg.animationType == TypeAnimation.RotateScaleAT)
-        {
-            auxArg.targetRotation = EditorGUILayout.Vector3Field("Target Rotation", auxArg.targetRotation);
-        }
+        //if (auxArg.animationType == TypeAnimation.Rotate || auxArg.animationType == TypeAnimation.RotateBackOrigin
+        //    || auxArg.animationType == TypeAnimation.RotateScaleAT)
+        //{
+        //    auxArg.targetRotation = EditorGUILayout.Vector3Field("Target Rotation", auxArg.targetRotation);
+        //}
     }
 
     protected override void ShowColor(AnimationAssistant auxArg)
     {
-        if (auxArg.animationType == TypeAnimation.ColorChange)
-        {
-            auxArg.colorTarget = EditorGUILayout.ColorField("Color Target", auxArg.colorTarget);
-        }
-    }
-
-    protected override void ShowTargetPoint(AnimationAssistant auxArg)
-    {
-        throw new System.NotImplementedException();
+        //if (auxArg.animationType == TypeAnimation.ColorChange)
+        //{
+        //    auxArg.colorTarget = EditorGUILayout.ColorField("Color Target", auxArg.colorTarget);
+        //}
     }
 }
 

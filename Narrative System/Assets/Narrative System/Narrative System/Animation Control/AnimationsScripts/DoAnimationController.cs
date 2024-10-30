@@ -127,22 +127,32 @@ public abstract class DoAnimationController : MonoBehaviour
 [System.Serializable]
 public class AnimationAssistant
 {
-    public TypeAnimation animationType;
     public Vector3 targetPosition;
     public Vector3 targetScale;
     public Vector3 targetRotation;
+    public Vector2 targetSizeDelta;
     public float timeAnimation =0.3F;
     public float delay;
     public float coldTime;
     public Ease animationCurve;
     public bool playOnAwake;
-    public Transform worldPoint;
-    public RectTransform uiPoint;
+    public Transform atractor;
     public Color colorTarget;
     public bool display;
     public int loops;
     public Sprite spriteShift;
     public float pixelMultiplier;
+    public float fadeTarget;
+    public bool applyOnCanvasGroup;
+    public bool useSequence;
+    public bool displayPosition;
+    public bool displayScale;
+    public bool displayTexture;
+    public bool displayRotation;
+    public bool displayColor;
+    public bool displayPixelMultiplier;
+    public bool displaySizeDelta;
+    public bool displayFade;
 
     public void DisplayAnimationAux()=> display = !display;
 }

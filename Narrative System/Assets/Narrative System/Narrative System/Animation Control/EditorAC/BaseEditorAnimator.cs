@@ -22,7 +22,7 @@ public abstract class BaseEditorAnimator : Editor
         foreach (AnimationAssistant aux in animationController.GetList())
         {
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("" + animationController.GetList().IndexOf(aux) + "[" + aux.animationType.ToString() + "]"))
+            if (GUILayout.Button("[" + animationController.GetList().IndexOf(aux)+"]"))
             {
                 aux.DisplayAnimationAux();
             }
@@ -63,8 +63,7 @@ public abstract class BaseEditorAnimator : Editor
     protected abstract void ShowTargetPosition(AnimationAssistant auxArg);
     protected abstract void ShowTargetScale(AnimationAssistant auxArg);
     protected abstract void ShowTargetRotation(AnimationAssistant auxArg);
-    protected abstract void ShowTargetPoint(AnimationAssistant auxArg);
-    protected virtual void ShowColor(AnimationAssistant auxArg){}
+    protected abstract void ShowColor(AnimationAssistant auxArg);
 }
 
 #endif

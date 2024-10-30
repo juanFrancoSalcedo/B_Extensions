@@ -10,12 +10,16 @@ namespace B_Extensions.SceneLoader
     {
         public static List<string> listScenes = new List<string>();
         [ListToEnumEditor(typeof(CallerSceneLoader), nameof(listScenes))]
-        public string sceneName;//= System.IO.Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(0));
+        public string sceneName;
+        SceneLoader sceneLoader = null;
 
-        public void LoadScene()
-        {
-            SceneLoader.Instance.LoadScene(sceneName);
-        }
+        private void Start() => sceneLoader = SceneLoader.Instance;
+        public void LoadScene() => sceneLoader.LoadScene(sceneName);
+        public void ReloadScene() => sceneLoader.ReloadScene();
+        public void Pause() => sceneLoader.Pause(true);
+        public void Unpause() => sceneLoader.Pause(false);
+
+
 
         #region EditorMethods
         private void OnValidate()

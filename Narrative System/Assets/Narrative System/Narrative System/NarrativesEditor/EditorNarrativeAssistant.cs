@@ -123,7 +123,7 @@ public class EditorNarrativeAssistant : Editor
     
     private void ShowDataAnimation(AnimationAssistant animationAux)
     {
-        animationAux.animationType = (TypeAnimation)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationType);
+        //animationAux.animationType = (TypeAnimation)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationType);
         ShowTargetPosition(animationAux);
         ShowTargetScale(animationAux);
         animationAux.delay = EditorGUILayout.FloatField("Delay Time", animationAux.delay);
@@ -135,18 +135,18 @@ public class EditorNarrativeAssistant : Editor
 
     private  void ShowTargetPosition(AnimationAssistant auxArg)
     {
-        if (auxArg.animationType == TypeAnimation.Move || auxArg.animationType == TypeAnimation.MoveReturnOrigin || auxArg.animationType == TypeAnimation.MoveLocal)
-        {
-            auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
-        }
+        //if (auxArg.animationType == TypeAnimation.Move || auxArg.animationType == TypeAnimation.MoveReturnOrigin || auxArg.animationType == TypeAnimation.MoveLocal)
+        //{
+        //    auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
+        //}
     }
 
     private void ShowTargetScale(AnimationAssistant auxArg)
     {
-        if (auxArg.animationType == TypeAnimation.Scale || auxArg.animationType == TypeAnimation.ScaleReturnOriginScale)
-        {
-            auxArg.targetScale = EditorGUILayout.Vector3Field("Target Scale", auxArg.targetScale);
-        }
+        //if (auxArg.animationType == TypeAnimation.Scale || auxArg.animationType == TypeAnimation.ScaleReturnOriginScale)
+        //{
+        //    auxArg.targetScale = EditorGUILayout.Vector3Field("Target Scale", auxArg.targetScale);
+        //}
     }
 }
 

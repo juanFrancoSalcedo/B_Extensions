@@ -12,6 +12,11 @@ public class AnimationTextController : DoAnimationController
     public TextMeshProUGUI textComponent { get; set; }
     private string textNarrativeBuffer;
 
+    private void OnValidate()
+    {
+        print("Este componente no es tan optimo, and many of their behaviours doesn't works. We will improve it in the future");
+    }
+
     private new void OnEnable()
     {
         textComponent = GetComponent<TextMeshProUGUI>();
@@ -40,8 +45,8 @@ public class AnimationTextController : DoAnimationController
         }
 
         Sequence sequence = DOTween.Sequence();
-
-        switch (listAux[currentAnimation].animationType)
+        TypeAnimation assd = TypeAnimation.Move;
+        switch (assd)
         {
             case TypeAnimation.Move:
                 rectTransform.DOMove(listAux[currentAnimation].targetPosition, listAux[currentAnimation].timeAnimation, false).

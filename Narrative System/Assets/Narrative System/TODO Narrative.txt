@@ -1,3 +1,0 @@
-- un boton Duplicar animacion y poner al final
-
-- Hechar un ojo a AnimationCurve de UnityEngine

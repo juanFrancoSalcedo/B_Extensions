@@ -1,9 +1,0 @@
-*29/09/2020 from MarbleRacingStars
-*17/10/2020 From Plumiferos (Agregada Rotate)
-*07/11/2020 FromPlumiferos (Actualizar Cambios)
-*16/11/2020 FromPillowWars (bug cuando no hay animaciones)
-*20/11/2020 FromPlumiferos(- AnimatorUIController = añadido callback al final de SwitchSprite.
-- DoAnimatorController e hijos = Use TimeSacle.
-- AnimatorTextController = ColorChanger agregado.
-- Rewind)
-*23/11/2021 FromElectionParty(- Rotacion mas alla de 360 grados AnimationUI)
