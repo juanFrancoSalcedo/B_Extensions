@@ -9,14 +9,11 @@ using DG.Tweening;
 [CustomEditor(typeof(AnimationController))]
 public class EditorDoAnimator : BaseEditorAnimator
 {
-    //protected new AnimationController animationController;
-
     public override void OnInspectorGUI()
     {
         animationController = (AnimationController)target;
         base.OnInspectorGUI();
     }
-
 
     protected override void ShowData(AnimationAssistant animationAux)
     {
@@ -26,7 +23,6 @@ public class EditorDoAnimator : BaseEditorAnimator
         animationAux.animationCurve = (Ease)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationCurve);
         animationAux.loops = EditorGUILayout.IntField("Loops", animationAux.loops);
         animationAux.playOnAwake = EditorGUILayout.Toggle("Play On Awake", animationAux.playOnAwake);
-        animationAux.useSequence = EditorGUILayout.Toggle("Sequence", animationAux.useSequence);
         ShowTargetPosition(animationAux);
         ShowTargetScale(animationAux);
         ShowTargetRotation(animationAux);

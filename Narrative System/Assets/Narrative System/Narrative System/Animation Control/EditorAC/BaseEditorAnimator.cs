@@ -7,12 +7,12 @@ using UnityEditor;
 #if UNITY_EDITOR
 public abstract class BaseEditorAnimator : Editor
 {
-    public DoAnimationController animationController { get; set; }
+    public BaseDoAnimationController animationController { get; set; }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        animationController = (DoAnimationController)target;
+        animationController = (BaseDoAnimationController)target;
 
         if (GUILayout.Button("[Add Animation]"))
         {

@@ -24,7 +24,6 @@ public class EditorDoUIAnimator : BaseEditorAnimator
         animationAux.animationCurve = (Ease)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationCurve);
         animationAux.loops = EditorGUILayout.IntField("Loops", animationAux.loops);
         animationAux.playOnAwake = EditorGUILayout.Toggle("Play On Awake", animationAux.playOnAwake);
-        animationAux.useSequence = EditorGUILayout.Toggle("Sequence", animationAux.useSequence);
         ShowTargetPosition(animationAux);
         ShowTargetScale(animationAux);
         ShowTargetSprite(animationAux);
@@ -46,8 +45,19 @@ public class EditorDoUIAnimator : BaseEditorAnimator
 
         if (auxArg.displayPosition)
         {
+            var posLocal = animationController.transform.localPosition;
+            EditorGUILayout.BeginHorizontal();
+            GUI.color = Color.yellow;
+            EditorGUILayout.HelpBox($"local Position ={posLocal.x},{posLocal.y},{posLocal.z} ", MessageType.None);
+            if (GUILayout.Button("[As target]"))
+                auxArg.targetPosition = posLocal;
+            EditorGUILayout.EndHorizontal();
+            GUI.color = Color.white;
             auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
             auxArg.atractor = (Transform)EditorGUILayout.ObjectField("Atractor", auxArg.atractor, typeof(Transform));
+
+            if(auxArg.atractor)
+                EditorGUILayout.HelpBox("The attractor uses local position, so make sure it stays within the same environment or a similar one.", MessageType.Info);
         }
 
         EditorGUILayout.EndVertical();//---- quadPos
@@ -100,7 +110,7 @@ public class EditorDoUIAnimator : BaseEditorAnimator
     {
         EditorGUILayout.BeginVertical("box"); //----quad position
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Texture Change", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Sprite Change", EditorStyles.boldLabel);
         auxArg.displayTexture = EditorGUILayout.Toggle(auxArg.displayTexture);
         EditorGUILayout.EndHorizontal();
         if (auxArg.displayTexture)

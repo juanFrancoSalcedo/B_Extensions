@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
 
-public abstract class DoAnimationController : MonoBehaviour
+public abstract class BaseDoAnimationController : MonoBehaviour
 {
     public Vector3 originPosition { get; set; }
     public Vector3 originScale { get; set; }
@@ -16,31 +16,31 @@ public abstract class DoAnimationController : MonoBehaviour
     [Header("~~~~Events~~~~~")]
     [SerializeField] protected bool useTimeScale = true; 
     [SerializeField] private bool inLoop;
-    [SerializeField] private bool restoreOnEnd;
-    [SerializeField] protected bool restoreOnDisable;
     [SerializeField] protected bool rewindOnDisable;
     public UnityEvent OnStartedCallBack;
     public UnityEvent OnEndedCallBack;
-    public System.Action OnCompleted;
+    public event System.Action OnCompleted;
 
-    public abstract void ActiveAnimation();
+    public abstract void ActiveAnimation(string putisima = "");
     public void ActiveAnimation(int newIndex) 
     {
          currentAnimation = newIndex;
-         ActiveAnimation();
+         ActiveAnimation("default");
     }
 
     public void RewindAndActiveAnimation()
     {
         Rewind();
-        ActiveAnimation();
+        ActiveAnimation("\"default rewind\"");
     }
 
     protected void OnEnable()
     {
-        if (listAux.Count == 0) listAux.Add(new AnimationAssistant());
+        if (listAux.Count == 0) 
+            listAux.Add(new AnimationAssistant());
 
-        if (listAux[currentAnimation].playOnAwake && currentAnimation == 0) ActiveAnimation();
+        if (listAux[currentAnimation].playOnAwake && currentAnimation == 0) 
+            ActiveAnimation("default active");
     }
 
     protected void OnDisable()
@@ -49,13 +49,6 @@ public abstract class DoAnimationController : MonoBehaviour
         {
             currentAnimation = 0;
             transform.DOKill();
-        }
-
-        if (restoreOnEnd) 
-        {
-            RestorePosition();
-            RestoreScale();
-            RestoreRotation();
         }
     }
 
@@ -67,61 +60,28 @@ public abstract class DoAnimationController : MonoBehaviour
 
     public void StopAnimations()=> transform.DOKill();
 
-    public List<AnimationAssistant> GetList()
-    {
-        return listAux;
-    }
+    public List<AnimationAssistant> GetList() => listAux;
 
     protected void PlusAnimationIndex()
     {
         currentAnimation++;
-
-        if (currentAnimation == listAux.Count)
+        if (currentAnimation < listAux.Count)
         {
-            currentAnimation = 0;
-            OnCompleted?.Invoke();
-            OnEndedCallBack?.Invoke();
-            if (restoreOnEnd)
-            {
-                RestorePosition();
-                RestoreScale();
-                RestoreRotation();
-            }
-
-            if (inLoop)
-            {
-                ActiveAnimation();
-            }
+            if (listAux[currentAnimation].playOnAwake)
+                ActiveAnimation("default aumenta animacion");
+            
         }
         else
         {
-            if(listAux[currentAnimation].playOnAwake) ActiveAnimation();
+            OnCompleted?.Invoke();
+            OnEndedCallBack?.Invoke();
+            if (inLoop)
+                RewindAndActiveAnimation();
         }
     }
 
-    protected void CallBacks()
-    {
-        PlusAnimationIndex();
-    }
-
-    protected void RestoreScale()
-    {
-        transform.localScale = originScale;
-    }
-
-    protected virtual void RestorePosition()
-    {
-        transform.position = originPosition;
-    }
-    protected virtual void RestoreRotation()
-    {
-        transform.rotation = Quaternion.Euler(originRotation);
-    }
-
-    public void SetInloop(bool arg1)
-    {
-        inLoop = arg1;
-    }
+    protected void CallBacks() => PlusAnimationIndex();
+    public void SetInloop(bool arg1) => inLoop = arg1;
 }
 
 [System.Serializable]
@@ -144,7 +104,6 @@ public class AnimationAssistant
     public float pixelMultiplier;
     public float fadeTarget;
     public bool applyOnCanvasGroup;
-    public bool useSequence;
     public bool displayPosition;
     public bool displayScale;
     public bool displayTexture;
