@@ -1,9 +1,10 @@
 using UnityEditor;
 using UnityEngine;
 
+
+#if UNITY_EDITOR
 public class RandomTransform
 {
-
     [MenuItem("B_Extensions/Transform Modifier/Random Transform Trees %#t")]//%#e
     private static void RandomTransformModification()
     {
@@ -17,3 +18,4 @@ public class RandomTransform
         }
     }
 }
+#endif

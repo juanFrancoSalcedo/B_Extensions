@@ -1,6 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(RequireBadInterfaceAttribute))]
 
 public class BadInterfaceDrawer : PropertyDrawer
@@ -30,3 +32,4 @@ public class BadInterfaceDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
+#endif

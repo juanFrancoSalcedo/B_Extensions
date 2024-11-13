@@ -1,12 +1,13 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 
 [InitializeOnLoad]
 public static class BExtensionVersion
 {
     static string versionKey = "BExtensionVersion_Shown";
-    static string version = "1.1.23";
+    static string version = "1.1.4";
     static BExtensionVersion()
     {
 
@@ -17,5 +18,5 @@ public static class BExtensionVersion
             SessionState.SetBool("FirstInitDone", true);
         }
     }
-
 }
+#endif
