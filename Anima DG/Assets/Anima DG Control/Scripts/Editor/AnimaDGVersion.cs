@@ -4,16 +4,15 @@ using UnityEngine;
 #if UNITY_EDITOR
 
 [InitializeOnLoad]
-public static class BExtensionVersion
+public static class AnimaDGVersion
 {
-    static string versionKey = "BExtensionVersion_Shown";
-    static string version = "1.1.6";
-    static BExtensionVersion()
+    static string versionKey = "AnimaDGVersion_Shown";
+    static string version = "1.1.3";
+    static AnimaDGVersion()
     {
-
         if (!SessionState.GetBool(versionKey, false))
         {
-            Debug.Log($"B_Extension version {version}");
+            Debug.Log($"Anima DG Version {version}");
             SessionState.SetBool(versionKey, true);
         }
     }
