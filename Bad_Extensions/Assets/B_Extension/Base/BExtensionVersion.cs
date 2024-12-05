@@ -7,7 +7,7 @@ using UnityEngine;
 public static class BExtensionVersion
 {
     static string versionKey = "BExtensionVersion_Shown";
-    static string version = "1.1.6";
+    static string version = "1.1.7";
     static BExtensionVersion()
     {
 
