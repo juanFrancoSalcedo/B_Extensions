@@ -14,6 +14,10 @@ public class EditorDoUIAnimator : BaseEditorAnimator
     {
         animationController = (AnimationUIController)target;
         base.OnInspectorGUI();
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(animationController);
+        }
     }
 
     protected override void ShowData(AnimationAssistant animationAux)
@@ -85,7 +89,10 @@ public class EditorDoUIAnimator : BaseEditorAnimator
         auxArg.displayRotation = EditorGUILayout.Toggle(auxArg.displayRotation);
         EditorGUILayout.EndHorizontal();
         if (auxArg.displayRotation)
+        { 
+            auxArg.rotationType = (RotateMode)EditorGUILayout.EnumPopup("Rotation type", auxArg.rotationType);
             auxArg.targetRotation = EditorGUILayout.Vector3Field("Target Rotation", auxArg.targetRotation);
+        }
         EditorGUILayout.EndVertical();//---- quadPos
 
     }

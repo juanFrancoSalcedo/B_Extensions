@@ -112,6 +112,7 @@ public class AnimationAssistant
     public bool displayPixelMultiplier;
     public bool displaySizeDelta;
     public bool displayFade;
+    public RotateMode rotationType = RotateMode.Fast;
 
     public void DisplayAnimationAux()=> display = !display;
 }

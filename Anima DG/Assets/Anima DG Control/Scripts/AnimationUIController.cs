@@ -56,7 +56,7 @@ public class AnimationUIController : BaseDoAnimationController
                 SetDelay(currentAux.delay).SetLoops(currentAux.loops).
                 OnComplete(delegate { image.sprite = currentAux.spriteShift; }).SetUpdate(!useTimeScale));
         if (currentAux.displayRotation)
-            sequence.Insert(0, rectTransform.DORotate(currentAux.targetRotation, timeAnim, RotateMode.FastBeyond360).
+            sequence.Insert(0, rectTransform.DORotate(currentAux.targetRotation, timeAnim, currentAux.rotationType).
                 SetEase(currentAux.animationCurve).
                 SetDelay(currentAux.delay).
                 SetLoops(currentAux.loops)

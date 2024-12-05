@@ -51,7 +51,7 @@ public class AnimationController : BaseDoAnimationController
                 SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
 
         if (currentAux.displayRotation)
-            sequence.Insert(0, _transform.DORotate(currentAux.targetRotation, timeAnim, RotateMode.FastBeyond360).
+            sequence.Insert(0, _transform.DORotate(currentAux.targetRotation, timeAnim, currentAux.rotationType).
                 SetEase(currentAux.animationCurve).
                 SetDelay(currentAux.delay).
                 SetLoops(currentAux.loops)

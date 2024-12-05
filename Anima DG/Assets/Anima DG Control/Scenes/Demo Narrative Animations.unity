@@ -587,6 +587,7 @@ MonoBehaviour:
     displayPixelMultiplier: 0
     displaySizeDelta: 0
     displayFade: 0
+    rotationType: 0
   useTimeScale: 1
   inLoop: 0
   rewindOnDisable: 0
@@ -835,16 +836,43 @@ MonoBehaviour:
     fadeTarget: 0
     applyOnCanvasGroup: 1
     displayPosition: 1
-    displayScale: 1
+    displayScale: 0
     displayTexture: 0
     displayRotation: 1
-    displayColor: 1
-    displayPixelMultiplier: 1
-    displaySizeDelta: 1
-    displayFade: 1
+    displayColor: 0
+    displayPixelMultiplier: 0
+    displaySizeDelta: 0
+    displayFade: 0
+    rotationType: 1
+  - targetPosition: {x: 0, y: 0, z: 0}
+    targetScale: {x: 0, y: 0, z: 0}
+    targetRotation: {x: 0, y: 0, z: 0}
+    targetSizeDelta: {x: 0, y: 0}
+    timeAnimation: 0.3
+    delay: 0
+    coldTime: 0
+    animationCurve: 0
+    playOnAwake: 0
+    atractor: {fileID: 0}
+    colorTarget: {r: 0, g: 0, b: 0, a: 0}
+    display: 1
+    loops: 0
+    spriteShift: {fileID: 0}
+    pixelMultiplier: 0
+    fadeTarget: 0
+    applyOnCanvasGroup: 0
+    displayPosition: 1
+    displayScale: 0
+    displayTexture: 0
+    displayRotation: 0
+    displayColor: 0
+    displayPixelMultiplier: 0
+    displaySizeDelta: 0
+    displayFade: 0
+    rotationType: 0
   useTimeScale: 1
   inLoop: 0
-  rewindOnDisable: 0
+  rewindOnDisable: 1
   OnStartedCallBack:
     m_PersistentCalls:
       m_Calls: []
