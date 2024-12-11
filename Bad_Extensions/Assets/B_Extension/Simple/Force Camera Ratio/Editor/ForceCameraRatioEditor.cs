@@ -18,7 +18,7 @@ namespace LetterboxCamera
         /// <summary>
         /// Create a ForceCameraRatio Object in the current scene
         /// </summary>
-        [MenuItem("GameObject/Create Force Camera Ratios Object", false, 11)]
+        //[MenuItem("GameObject/Create Force Camera Ratios Object", false, 11)]
         public static void ForceCameraRatios () {
             ForceCameraRatio myCameraForcer = new GameObject("Force Camera Ratios").AddComponent<ForceCameraRatio>();
             Selection.activeGameObject = myCameraForcer.gameObject;

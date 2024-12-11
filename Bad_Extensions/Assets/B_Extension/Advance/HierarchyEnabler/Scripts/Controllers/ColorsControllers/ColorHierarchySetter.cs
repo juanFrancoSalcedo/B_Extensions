@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace B_Extensions.HierarchyStates
 {
@@ -8,13 +9,6 @@ namespace B_Extensions.HierarchyStates
     public class ColorHierarchySetter : MonoBehaviour
     {
         public Color colorInHierarchy = new Color(1, 1, 1, 1);
-
-        private void OnValidate()
-        {
-            hideFlags = HideFlags.HideInInspector;
-            if (colorInHierarchy.a > 0.5f)
-                colorInHierarchy.a = 0.5f;
-        }
         public void SetColor(Color newColor) => colorInHierarchy = newColor;
 
     }
