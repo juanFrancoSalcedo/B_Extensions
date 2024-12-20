@@ -47,11 +47,16 @@ public class WindowTextBrowser : EditorWindow
 
     public static void SearchComponents(string str)
     {
+#if UNITY_2023_3_OR_NEWER
+        var items = FindObjectsByType<Text>(FindObjectsSortMode.None);
+        var items2 = FindObjectsByType<TextMeshProUGUI>(FindObjectsSortMode.None);
+#else
         var items = GameObject.FindObjectsOfType<Text>(true);
         var items2 = GameObject.FindObjectsOfType<TextMeshProUGUI>(true);
-        
-        var search = items.ToList().Where(t => t.text.Contains(str));
-        var search2 = items2.ToList().Where(t => t.text.Contains(str));
+#endif
+        var tehStr = str.ToLower();
+        var search = items.ToList().Where(t => t.text.ToLower().Contains(tehStr));
+        var search2 = items2.ToList().Where(t => t.text.ToLower().Contains(tehStr));
 
         List<GameObject> list = new List<GameObject>();
         foreach (var item in search)
