@@ -21,7 +21,7 @@ public abstract class BaseDoAnimationController : MonoBehaviour
     public UnityEvent OnEndedCallBack;
     public event System.Action OnCompleted;
 
-    public abstract void ActiveAnimation(string putisima = "");
+    public abstract void ActiveAnimation(string fromDebug = "");
     public void ActiveAnimation(int newIndex) 
     {
          currentAnimation = newIndex;
