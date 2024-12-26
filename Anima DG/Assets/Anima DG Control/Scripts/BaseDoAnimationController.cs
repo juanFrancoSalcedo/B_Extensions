@@ -91,7 +91,7 @@ public class AnimationAssistant
     public Vector3 targetScale;
     public Vector3 targetRotation;
     public Vector2 targetSizeDelta;
-    public float timeAnimation =0.3F;
+    public float timeAnimation = 0.3F;
     public float delay;
     public float coldTime;
     public Ease animationCurve;
@@ -103,6 +103,7 @@ public class AnimationAssistant
     public Sprite spriteShift;
     public float pixelMultiplier;
     public float fadeTarget;
+    public RotateMode rotationType = RotateMode.Fast;
     public bool applyOnCanvasGroup;
     public bool displayPosition;
     public bool displayScale;
@@ -112,7 +113,17 @@ public class AnimationAssistant
     public bool displayPixelMultiplier;
     public bool displaySizeDelta;
     public bool displayFade;
-    public RotateMode rotationType = RotateMode.Fast;
+    public bool displayTextCharaterSplit;
+    public bool displayTextWordSplit;
+    public bool displayTextLineSplit;
+    public float charSplittTarget;
+    public float wordSplitTarget;
+    public float lineSplitTarget;
+#if ANIMA_DOTWEEN_PRO
+    public bool displayTextOutlineColor;
+    public bool displayTextChange;
+    public string newText;
+#endif
 
     public void DisplayAnimationAux()=> display = !display;
 }

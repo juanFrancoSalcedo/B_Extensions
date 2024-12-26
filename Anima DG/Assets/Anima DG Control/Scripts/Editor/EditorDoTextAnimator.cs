@@ -29,12 +29,17 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         animationAux.playOnAwake = EditorGUILayout.Toggle("Play On Awake", animationAux.playOnAwake);
         ShowTargetPosition(animationAux);
         ShowTargetScale(animationAux);
-        ShowTargetSprite(animationAux);
         ShowTargetRotation(animationAux);
-        ShowColor(animationAux);
         ShowSizeDelta(animationAux);
-        ShowPixelPerUnitMultiplier(animationAux);
         ShowFade(animationAux);
+        ShowCharacterSplit(animationAux);
+        ShowWordSplit(animationAux);
+        ShowLineSeparation(animationAux);
+#if ANIMA_DOTWEEN_PRO
+        ShowNewText(animationAux);
+        ShowColorOutline(animationAux);
+        ShowColor(animationAux);
+#endif
     }
 
     protected override void ShowTargetPosition(AnimationAssistant auxArg)
@@ -111,24 +116,6 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         EditorGUILayout.EndVertical();
     }
 
-    private void ShowTargetSprite(AnimationAssistant auxArg)
-    {
-        EditorGUILayout.BeginVertical("box"); //----quad position
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Sprite Change", EditorStyles.boldLabel);
-        auxArg.displayTexture = EditorGUILayout.Toggle(auxArg.displayTexture);
-        EditorGUILayout.EndHorizontal();
-        if (auxArg.displayTexture)
-        {
-            SerializedProperty objSer;
-            objSer = serializedObject.FindProperty("listAux");
-            SerializedProperty spriteShift;
-            spriteShift = objSer.GetArrayElementAtIndex(animationController.listAux.IndexOf(auxArg));
-            EditorGUILayout.PropertyField(spriteShift.FindPropertyRelative("spriteShift"), new GUIContent("SpriteShift"));
-            serializedObject.ApplyModifiedProperties();
-        }
-        EditorGUILayout.EndVertical();//---- quadPos
-    }
 
     private void ShowSizeDelta(AnimationAssistant auxArg)
     {
@@ -142,17 +129,6 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         EditorGUILayout.EndVertical();//---- quadPos
     }
 
-    private void ShowPixelPerUnitMultiplier(AnimationAssistant auxArg)
-    {
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Pixel Perfect", EditorStyles.boldLabel);
-        auxArg.displayPixelMultiplier = EditorGUILayout.Toggle(auxArg.displayPixelMultiplier);
-        EditorGUILayout.EndHorizontal();
-        if (auxArg.displayPixelMultiplier)
-            auxArg.pixelMultiplier = EditorGUILayout.FloatField("Sliced Multiplier", auxArg.pixelMultiplier);
-        EditorGUILayout.EndVertical();//---- quadPos
-    }
 
     private void ShowFade(AnimationAssistant auxArg)
     {
@@ -170,6 +146,82 @@ public class EditorDoTextAnimator : BaseEditorAnimator
             EditorGUILayout.EndHorizontal();
         }
         EditorGUILayout.EndVertical();//---- quadPos
+    }
+
+    private void ShowColorOutline(AnimationAssistant auxArg)
+    {
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Color Outline", EditorStyles.boldLabel);
+        auxArg.displayTextOutlineColor = EditorGUILayout.Toggle(auxArg.displayTextOutlineColor);
+        EditorGUILayout.EndHorizontal();
+        if (auxArg.displayTextOutlineColor)
+        {
+            auxArg.colorTarget = EditorGUILayout.ColorField("Color Target", auxArg.colorTarget);
+        }
+        EditorGUILayout.EndVertical();//---- quadPos
+    }
+
+    private void ShowCharacterSplit(AnimationAssistant auxArg)
+    {
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Character Separation", EditorStyles.boldLabel);
+        auxArg.displayTextCharaterSplit = EditorGUILayout.Toggle(auxArg.displayTextCharaterSplit);
+        EditorGUILayout.EndHorizontal();
+        if (auxArg.displayTextCharaterSplit)
+        {
+            auxArg.charSplittTarget = EditorGUILayout.FloatField("Separation value", auxArg.charSplittTarget);
+        }
+        EditorGUILayout.EndVertical();//---- quadPos
+    }
+
+    private void ShowWordSplit(AnimationAssistant auxArg)
+    {
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Word Separation", EditorStyles.boldLabel);
+        auxArg.displayTextWordSplit = EditorGUILayout.Toggle(auxArg.displayTextWordSplit);
+        EditorGUILayout.EndHorizontal();
+        if (auxArg.displayTextWordSplit)
+        {
+            auxArg.wordSplitTarget = EditorGUILayout.FloatField("Separation value", auxArg.wordSplitTarget);
+        }
+        EditorGUILayout.EndVertical();//---- quadPos
+    }
+
+    private void ShowLineSeparation(AnimationAssistant auxArg)
+    {
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Line Separation", EditorStyles.boldLabel);
+        auxArg.displayTextLineSplit = EditorGUILayout.Toggle(auxArg.displayTextLineSplit);
+        EditorGUILayout.EndHorizontal();
+        if (auxArg.displayTextLineSplit)
+        {
+            auxArg.lineSplitTarget = EditorGUILayout.FloatField("Separation value", auxArg.lineSplitTarget);
+        }
+        EditorGUILayout.EndVertical();//---- quadPos
+    }
+
+    private void ShowNewText(AnimationAssistant auxArg)
+    {
+        EditorGUILayout.BeginVertical("box");
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Text", EditorStyles.boldLabel);
+        auxArg.displayTextChange = EditorGUILayout.Toggle(auxArg.displayTextChange);
+        EditorGUILayout.EndHorizontal();
+
+        if (auxArg.displayTextChange)
+        {
+            EditorGUILayout.LabelField("New Text", EditorStyles.label);
+            auxArg.newText = EditorGUILayout.TextArea(
+                auxArg.newText,
+                GUILayout.Height(60)
+            );
+        }
+
+        EditorGUILayout.EndVertical();
     }
 }
 #endif

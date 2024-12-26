@@ -45,39 +45,39 @@ public class AnimationUIController : BaseDoAnimationController
         if (currentAux.displayPosition)
             sequence.Insert(0, rectTransform.DOLocalMove(targetPos, timeAnim).
                 SetEase(currentAux.animationCurve).SetDelay(delay).
-                SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
+                SetLoops(currentAux.loops));
         if (currentAux.displayScale)
             sequence.Insert(0, rectTransform.DOScale(currentAux.targetScale, timeAnim).
                 SetEase(currentAux.animationCurve).SetDelay(delay).
-                SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
+                SetLoops(currentAux.loops));
         if (currentAux.displayTexture)
             sequence.Insert(0, image.DOFade(1, timeAnim).
                 SetEase(currentAux.animationCurve).
                 SetDelay(currentAux.delay).SetLoops(currentAux.loops).
-                OnComplete(delegate { image.sprite = currentAux.spriteShift; }).SetUpdate(!useTimeScale));
+                OnComplete(delegate { image.sprite = currentAux.spriteShift; }));
         if (currentAux.displayRotation)
             sequence.Insert(0, rectTransform.DORotate(currentAux.targetRotation, timeAnim, currentAux.rotationType).
                 SetEase(currentAux.animationCurve).
                 SetDelay(currentAux.delay).
                 SetLoops(currentAux.loops)
-                .SetUpdate(!useTimeScale));
+                );
         if (currentAux.displayColor)
             sequence.Insert(0, image.DOColor(currentAux.colorTarget, timeAnim).
                 SetEase(currentAux.animationCurve).
                 SetDelay(currentAux.delay).
                 SetLoops(currentAux.loops)
-                .SetUpdate(!useTimeScale));
+                );
         if (currentAux.displaySizeDelta)
             sequence.Insert(0, rectTransform.DOSizeDelta(currentAux.targetSizeDelta, timeAnim).
                 SetEase(currentAux.animationCurve).
                 SetDelay(currentAux.delay).
                 SetLoops(currentAux.loops)
-                .SetUpdate(!useTimeScale));
+                );
 
         if (currentAux.displayPixelMultiplier)
             sequence.Insert(0, DOTween.To(() => image.pixelsPerUnitMultiplier, juu => image.pixelsPerUnitMultiplier = juu, currentAux.pixelMultiplier,
                 currentAux.timeAnimation).SetEase(currentAux.animationCurve).SetDelay(currentAux.delay).
-                SetLoops(currentAux.loops).OnComplete(() => { StopCoroutine(UpdatePixelPerUnit()); }).SetUpdate(!useTimeScale).
+                SetLoops(currentAux.loops).OnComplete(() => { StopCoroutine(UpdatePixelPerUnit()); }).
                 OnPlay(() => StartCoroutine(UpdatePixelPerUnit())));
 
         if (currentAux.displayFade)
@@ -88,18 +88,18 @@ public class AnimationUIController : BaseDoAnimationController
                 sequence.Insert(0, DOTween.To(() => canvasGroup.alpha, juu => canvasGroup.alpha = juu, currentAux.fadeTarget, timeAnim).
                     SetEase(currentAux.animationCurve).
                     SetDelay(currentAux.delay).
-                    SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
+                    SetLoops(currentAux.loops));
 
             }
             else
             {
                 sequence.Insert(0, image.DOFade(currentAux.fadeTarget, currentAux.timeAnimation).
                     SetEase(currentAux.animationCurve).SetDelay(delay).
-                    SetLoops(currentAux.loops).SetUpdate(!useTimeScale));
+                    SetLoops(currentAux.loops));
             }
         }
 
-        sequence.OnComplete(CallBacks);
+        sequence.OnComplete(CallBacks).SetUpdate(!useTimeScale);
     }
 
     private IEnumerator UpdatePixelPerUnit()
