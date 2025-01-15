@@ -13,12 +13,14 @@ public class EditorDoTextAnimator : BaseEditorAnimator
     {
         animationController = (AnimationTextController)target;
         base.OnInspectorGUI();
+
         if (GUI.changed)
         {
             EditorUtility.SetDirty(animationController);
         }
     }
 
+    private SerializedProperty animationsProperty;
     protected override void ShowData(AnimationAssistant animationAux)
     {
         //animationAux.animationType = (TypeAnimation)EditorGUILayout.EnumPopup("Animation Type", animationAux.animationType);
@@ -100,8 +102,7 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         EditorGUILayout.EndVertical();//---- quadPos
 
     }
-
-
+#if ANIMA_DOTWEEN_PRO
     protected override void ShowColor(AnimationAssistant auxArg)
     {
         EditorGUILayout.BeginVertical("box");
@@ -115,7 +116,7 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         }
         EditorGUILayout.EndVertical();
     }
-
+#endif
 
     private void ShowSizeDelta(AnimationAssistant auxArg)
     {
@@ -148,6 +149,7 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         EditorGUILayout.EndVertical();//---- quadPos
     }
 
+#if ANIMA_DOTWEEN_PRO
     private void ShowColorOutline(AnimationAssistant auxArg)
     {
         EditorGUILayout.BeginVertical("box");
@@ -161,6 +163,7 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         }
         EditorGUILayout.EndVertical();//---- quadPos
     }
+#endif
 
     private void ShowCharacterSplit(AnimationAssistant auxArg)
     {
@@ -204,6 +207,7 @@ public class EditorDoTextAnimator : BaseEditorAnimator
         EditorGUILayout.EndVertical();//---- quadPos
     }
 
+#if ANIMA_DOTWEEN_PRO
     private void ShowNewText(AnimationAssistant auxArg)
     {
         EditorGUILayout.BeginVertical("box");
@@ -223,5 +227,6 @@ public class EditorDoTextAnimator : BaseEditorAnimator
 
         EditorGUILayout.EndVertical();
     }
+#endif
 }
 #endif

@@ -87,6 +87,8 @@ public abstract class BaseDoAnimationController : MonoBehaviour
 [System.Serializable]
 public class AnimationAssistant
 {
+    public UnityEvent onStarts;
+    public UnityEvent onEnds;
     public Vector3 targetPosition;
     public Vector3 targetScale;
     public Vector3 targetRotation;

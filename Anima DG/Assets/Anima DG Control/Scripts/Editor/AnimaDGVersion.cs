@@ -7,7 +7,7 @@ using UnityEngine;
 public static class AnimaDGVersion
 {
     static string versionKey = "AnimaDGVersion_Shown";
-    static string version = "1.1.4";
+    static string version = "1.2.1";
     static AnimaDGVersion()
     {
         if (!SessionState.GetBool(versionKey, false))

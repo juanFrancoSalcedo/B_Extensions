@@ -723,7 +723,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listAux:
-  - targetPosition: {x: 0, y: 168, z: 0}
+  - onStarts:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnds:
+      m_PersistentCalls:
+        m_Calls: []
+    targetPosition: {x: 0, y: 168, z: 0}
     targetScale: {x: 1, y: 1, z: 1}
     targetRotation: {x: 0, y: 0, z: 0}
     targetSizeDelta: {x: 100, y: 30}
@@ -758,7 +764,13 @@ MonoBehaviour:
     displayTextOutlineColor: 1
     displayTextChange: 0
     newText: "Animales bailan en mi <i>Coraz\xF3n</i>, universos de asombramiento"
-  - targetPosition: {x: 0, y: -141, z: 0}
+  - onStarts:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnds:
+      m_PersistentCalls:
+        m_Calls: []
+    targetPosition: {x: 0, y: -141, z: 0}
     targetScale: {x: 1.11, y: 1.1, z: 1.1}
     targetRotation: {x: 0, y: 0, z: 4}
     targetSizeDelta: {x: 0, y: 0}
@@ -769,7 +781,7 @@ MonoBehaviour:
     playOnAwake: 1
     atractor: {fileID: 0}
     colorTarget: {r: 1, g: 0, b: 0, a: 1}
-    display: 1
+    display: 0
     loops: 0
     spriteShift: {fileID: 0}
     pixelMultiplier: 0
