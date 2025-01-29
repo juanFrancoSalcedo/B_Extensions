@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 namespace B_Extensions
 {
+    [RequireComponent(typeof(Button))]
     public class BaseButtonAttendant : MonoBehaviour
     {
         protected Button buttonComponent => GetComponent<Button>();

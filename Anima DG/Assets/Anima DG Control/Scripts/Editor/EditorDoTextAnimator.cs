@@ -103,7 +103,7 @@ public class EditorDoTextAnimator : BaseEditorAnimator
 
     }
 #if ANIMA_DOTWEEN_PRO
-    protected override void ShowColor(AnimationAssistant auxArg)
+    protected  void ShowColor(AnimationAssistant auxArg)
     {
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.BeginHorizontal();

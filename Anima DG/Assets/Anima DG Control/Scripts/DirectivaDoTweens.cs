@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Build;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor.Build;
 
 [InitializeOnLoad]
 public static class DirectivaDoTweens
@@ -45,3 +47,4 @@ public static class DirectivaDoTweens
         }
     }
 }
+#endif

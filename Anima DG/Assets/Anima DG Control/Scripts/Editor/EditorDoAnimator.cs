@@ -44,6 +44,8 @@ public class EditorDoAnimator : BaseEditorAnimator
             EditorGUILayout.HelpBox($"local Position ={posLocal.x},{posLocal.y},{posLocal.z} ", MessageType.None);
             if (GUILayout.Button("[As target]"))
                 auxArg.targetPosition = posLocal;
+            if (GUILayout.Button("[As Position]"))
+                animationController.transform.localPosition = auxArg.targetPosition;
             EditorGUILayout.EndHorizontal();
             GUI.color = Color.white;
             auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
@@ -79,7 +81,7 @@ public class EditorDoAnimator : BaseEditorAnimator
         EditorGUILayout.EndVertical();//---- quadPos
 
     }
-    protected override void ShowColor(AnimationAssistant auxArg)
+    protected void ShowColor(AnimationAssistant auxArg)
     {
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.BeginHorizontal();
