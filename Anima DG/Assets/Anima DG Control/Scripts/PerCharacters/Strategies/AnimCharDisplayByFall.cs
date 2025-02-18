@@ -17,6 +17,10 @@ public class AnimCharDisplayByFall : ITypingAnimaStrategy
             sequence2.Append(animator.DOFadeChar(i, 1, timePerChar));
         }
     }
+    public void CleanAnimations(DOTweenTMPAnimator animator)
+    {
+        animator.textInfo.ClearAllMeshInfo();
+    }
 
     public void PreAnimate(DOTweenTMPAnimator animator)
     {
@@ -50,6 +54,11 @@ public class AnimCharFallInvert : ITypingAnimaStrategy
             sequence2.Append(animator.DOFadeChar(i, 0, timePerChar));
             sequence3.Append(animator.DORotateChar(i, new Vector3(0, 0, Random.Range(-90,90)), timePerChar));
         }
+    }
+
+    public void CleanAnimations(DOTweenTMPAnimator animator)
+    {
+        animator.textInfo.ClearAllMeshInfo();
     }
 
     public void PreAnimate(DOTweenTMPAnimator animator)

@@ -19,6 +19,10 @@ public class AnimCharRandomPos : ITypingAnimaStrategy
         }
     }
 
+    public void CleanAnimations(DOTweenTMPAnimator animator)
+    {
+        animator.textInfo.ClearAllMeshInfo();
+    }
     public void PreAnimate(DOTweenTMPAnimator animator)
     {
         for (int i = 0; i < animator.textInfo.characterCount; ++i)

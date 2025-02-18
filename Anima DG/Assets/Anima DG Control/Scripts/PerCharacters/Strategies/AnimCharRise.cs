@@ -16,6 +16,10 @@ public class AnimCharRise : ITypingAnimaStrategy
             sequence2.Append(animator.DOFadeChar(i, 1, timePerChar));
         }
     }
+    public void CleanAnimations(DOTweenTMPAnimator animator)
+    {
+        animator.textInfo.ClearAllMeshInfo();
+    }
 
     public void PreAnimate(DOTweenTMPAnimator animator)
     {

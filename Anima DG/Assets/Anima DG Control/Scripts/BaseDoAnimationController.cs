@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Events;
+using System.Linq;
 
 public abstract class BaseDoAnimationController : MonoBehaviour
 {
@@ -61,6 +62,8 @@ public abstract class BaseDoAnimationController : MonoBehaviour
     public void StopAnimations()=> transform.DOKill();
 
     public List<AnimationAssistant> GetList() => listAux;
+
+    public AnimationAssistant Duplicate(AnimationAssistant aux) => aux.Copy();
 
     protected void PlusAnimationIndex()
     {
@@ -128,6 +131,7 @@ public class AnimationAssistant
 #endif
 
     public void DisplayAnimationAux()=> display = !display;
+    public AnimationAssistant Copy()=>(AnimationAssistant)MemberwiseClone();
 }
 
 public enum TypeAnimation

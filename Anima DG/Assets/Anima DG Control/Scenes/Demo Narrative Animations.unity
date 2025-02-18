@@ -562,7 +562,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listAux:
-  - targetPosition: {x: -0.055, y: 1.016, z: 0}
+  - onStarts:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnds:
+      m_PersistentCalls:
+        m_Calls: []
+    targetPosition: {x: -0.055, y: 1.016, z: 0}
     targetScale: {x: 3, y: 3, z: 3}
     targetRotation: {x: 0, y: 0, z: 68}
     targetSizeDelta: {x: 0, y: 0}
@@ -573,11 +579,12 @@ MonoBehaviour:
     playOnAwake: 1
     atractor: {fileID: 0}
     colorTarget: {r: 0, g: 0, b: 0, a: 0}
-    display: 0
+    display: 1
     loops: 0
     spriteShift: {fileID: 0}
     pixelMultiplier: 0
     fadeTarget: 0
+    rotationType: 0
     applyOnCanvasGroup: 0
     displayPosition: 1
     displayScale: 1
@@ -587,7 +594,15 @@ MonoBehaviour:
     displayPixelMultiplier: 0
     displaySizeDelta: 0
     displayFade: 0
-    rotationType: 0
+    displayTextCharaterSplit: 0
+    displayTextWordSplit: 0
+    displayTextLineSplit: 0
+    charSplittTarget: 0
+    wordSplitTarget: 0
+    lineSplitTarget: 0
+    displayTextOutlineColor: 0
+    displayTextChange: 0
+    newText: 
   useTimeScale: 1
   inLoop: 0
   rewindOnDisable: 0
@@ -802,7 +817,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 314, y: -742}
+  m_AnchoredPosition: {x: 250.3, y: -602.9}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1423712544
@@ -818,7 +833,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listAux:
-  - targetPosition: {x: 314, y: -202, z: 0}
+  - onStarts:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnds:
+      m_PersistentCalls:
+        m_Calls: []
+    targetPosition: {x: 250.3, y: -62.900024, z: 0}
     targetScale: {x: 2, y: 2, z: 2}
     targetRotation: {x: 0, y: 0, z: 90}
     targetSizeDelta: {x: 50, y: 50}
@@ -829,11 +850,12 @@ MonoBehaviour:
     playOnAwake: 1
     atractor: {fileID: 1701931956}
     colorTarget: {r: 1, g: 0, b: 0, a: 1}
-    display: 1
+    display: 0
     loops: 0
     spriteShift: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
     pixelMultiplier: 0
     fadeTarget: 0
+    rotationType: 1
     applyOnCanvasGroup: 1
     displayPosition: 1
     displayScale: 0
@@ -843,8 +865,22 @@ MonoBehaviour:
     displayPixelMultiplier: 0
     displaySizeDelta: 0
     displayFade: 0
-    rotationType: 1
-  - targetPosition: {x: 0, y: 0, z: 0}
+    displayTextCharaterSplit: 0
+    displayTextWordSplit: 0
+    displayTextLineSplit: 0
+    charSplittTarget: 0
+    wordSplitTarget: 0
+    lineSplitTarget: 0
+    displayTextOutlineColor: 0
+    displayTextChange: 0
+    newText: 
+  - onStarts:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnds:
+      m_PersistentCalls:
+        m_Calls: []
+    targetPosition: {x: 0, y: 0, z: 0}
     targetScale: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
     targetSizeDelta: {x: 0, y: 0}
@@ -855,11 +891,12 @@ MonoBehaviour:
     playOnAwake: 0
     atractor: {fileID: 0}
     colorTarget: {r: 0, g: 0, b: 0, a: 0}
-    display: 1
+    display: 0
     loops: 0
     spriteShift: {fileID: 0}
     pixelMultiplier: 0
     fadeTarget: 0
+    rotationType: 0
     applyOnCanvasGroup: 0
     displayPosition: 1
     displayScale: 0
@@ -869,7 +906,56 @@ MonoBehaviour:
     displayPixelMultiplier: 0
     displaySizeDelta: 0
     displayFade: 0
+    displayTextCharaterSplit: 0
+    displayTextWordSplit: 0
+    displayTextLineSplit: 0
+    charSplittTarget: 0
+    wordSplitTarget: 0
+    lineSplitTarget: 0
+    displayTextOutlineColor: 0
+    displayTextChange: 0
+    newText: 
+  - onStarts:
+      m_PersistentCalls:
+        m_Calls: []
+    onEnds:
+      m_PersistentCalls:
+        m_Calls: []
+    targetPosition: {x: 0, y: 0, z: 0}
+    targetScale: {x: 0, y: 0, z: 0}
+    targetRotation: {x: 0, y: 0, z: 0}
+    targetSizeDelta: {x: 0, y: 0}
+    timeAnimation: 0.3
+    delay: 0
+    coldTime: 0
+    animationCurve: 0
+    playOnAwake: 0
+    atractor: {fileID: 0}
+    colorTarget: {r: 0, g: 0, b: 0, a: 0}
+    display: 0
+    loops: 0
+    spriteShift: {fileID: 0}
+    pixelMultiplier: 0
+    fadeTarget: 0
     rotationType: 0
+    applyOnCanvasGroup: 0
+    displayPosition: 1
+    displayScale: 0
+    displayTexture: 0
+    displayRotation: 0
+    displayColor: 0
+    displayPixelMultiplier: 0
+    displaySizeDelta: 0
+    displayFade: 0
+    displayTextCharaterSplit: 0
+    displayTextWordSplit: 0
+    displayTextLineSplit: 0
+    charSplittTarget: 0
+    wordSplitTarget: 0
+    lineSplitTarget: 0
+    displayTextOutlineColor: 0
+    displayTextChange: 0
+    newText: 
   useTimeScale: 1
   inLoop: 0
   rewindOnDisable: 1

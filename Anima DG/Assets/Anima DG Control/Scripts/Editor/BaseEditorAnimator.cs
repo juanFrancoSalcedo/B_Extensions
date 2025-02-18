@@ -8,7 +8,6 @@ using UnityEditor;
 public abstract class BaseEditorAnimator : Editor
 {
     public BaseDoAnimationController animationController { get; set; }
-
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -19,12 +18,20 @@ public abstract class BaseEditorAnimator : Editor
             animationController.GetList().Add(new AnimationAssistant());
         }
 
+
         foreach (AnimationAssistant aux in animationController.GetList())
         {
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("[" + animationController.GetList().IndexOf(aux)+"]"))
             {
                 aux.DisplayAnimationAux();
+            }
+
+            GUI.color = Color.cyan;
+            if (GUILayout.Button("%", GUILayout.Width(30)))
+            {
+                var copy = animationController.Duplicate(aux);
+                animationController.listAux.Add(copy);
             }
 
             GUI.color = Color.red;
