@@ -9,9 +9,12 @@ namespace B_Extensions.HierarchyStates
         public void RestoreObjectsByParent(Transform parent, bool justChildrens)
         {
             var compon = parent.GetComponentsInChildren<StateSetter>();
-            Array.ForEach(compon, c => c.EnableOnHierarchy());
-            if (parent.GetComponent<StateSetter>() && !justChildrens)
-                parent.GetComponent<StateSetter>().EnableOnHierarchy();
+            Array.ForEach(compon, c => {
+                if(!ReferenceEquals(c, parent.GetComponent<StateSetter>()))
+                    c.EnableOnHierarchy();
+                else if(!justChildrens)
+                    c.EnableOnHierarchy();
+            });
         }
 
         public void RestoreObjects()
