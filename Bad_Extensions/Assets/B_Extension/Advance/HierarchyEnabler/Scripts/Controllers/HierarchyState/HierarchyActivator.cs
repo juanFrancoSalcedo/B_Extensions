@@ -17,13 +17,16 @@ namespace B_Extensions.HierarchyStates
             });
         }
 
+        
         public void RestoreObjects()
         {
             StateSetter[] compon = null;
 #if UNITY_2019
             compon = Resources.FindObjectsOfTypeAll<StateSetter>();
+#elif UNITY_6000
+            compon = FindObjectsByType<StateSetter>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID);
 #else
-        compon = FindObjectsOfType<StateSetter>(true);
+            compon = FindObjectsOfType<StateSetter>(true);
 #endif
             Array.ForEach(compon, c => c.EnableOnHierarchy());
         }
