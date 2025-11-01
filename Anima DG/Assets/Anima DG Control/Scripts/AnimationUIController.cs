@@ -10,6 +10,7 @@ public class AnimationUIController : BaseDoAnimationController
 {
     private RectTransform rectTransform;
     private Image image;
+    Sequence sequence = null;
 
     private new void OnEnable()
     {
@@ -21,17 +22,19 @@ public class AnimationUIController : BaseDoAnimationController
     protected new void OnDisable()
     {
         base.OnDisable();
-        rectTransform.DOKill();
-        image.DOKill();
+        sequence.Kill();
     }
 
+    public override void StopAnimations() 
+    {
+        sequence.Kill();
+    }
 
     public override void ActiveAnimation(string origen = "")
     {
         if (currentAnimation == 0)
             OnStartedCallBack?.Invoke();
-
-        Sequence sequence = DOTween.Sequence();
+        sequence = DOTween.Sequence();
         var currentAux = listAux[currentAnimation];
         var delay = currentAux.delay;
         var timeAnim = currentAux.timeAnimation;

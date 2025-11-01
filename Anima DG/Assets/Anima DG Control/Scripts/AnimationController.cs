@@ -9,6 +9,7 @@ public class AnimationController : BaseDoAnimationController
 {
     private SpriteRenderer _spriteRender;
     private Transform _transform;
+    Sequence sequence = null;
     private new void OnEnable()
     {
         _transform = transform;
@@ -26,13 +27,19 @@ public class AnimationController : BaseDoAnimationController
         _spriteRender.DOKill();
     }
 
+    public override void StopAnimations()
+    {
+        sequence.Kill();
+    }
+
     public override void ActiveAnimation(string origin = "")
     {
         if (currentAnimation == 0)
         {
             OnStartedCallBack?.Invoke();
         }
-        Sequence sequence = DOTween.Sequence();
+
+        sequence = DOTween.Sequence();
         var currentAux = listAux[currentAnimation];
         var delay = currentAux.delay;
         var timeAnim = currentAux.timeAnimation;

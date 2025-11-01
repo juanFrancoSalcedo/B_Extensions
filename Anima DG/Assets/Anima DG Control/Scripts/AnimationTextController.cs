@@ -7,6 +7,7 @@ public class AnimationTextController : BaseDoAnimationController
 {
     private RectTransform _rectTransform;
     private TMP_Text _text;
+    Sequence sequence;
 
     private new void OnEnable()
     {
@@ -22,12 +23,17 @@ public class AnimationTextController : BaseDoAnimationController
         _text.DOKill();
     }
 
+    public override void StopAnimations()
+    {
+        sequence.Kill();
+    }
+
     public override void ActiveAnimation(string fromDebug = "")
     {
         if (currentAnimation == 0)
             OnStartedCallBack?.Invoke();
 
-        Sequence sequence = DOTween.Sequence();
+        sequence = DOTween.Sequence();
         var currentAux = listAux[currentAnimation];
         var delay = currentAux.delay;
         var timeAnim = currentAux.timeAnimation;

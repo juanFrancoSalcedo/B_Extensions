@@ -28,6 +28,7 @@ public abstract class BaseDoAnimationController : MonoBehaviour
          currentAnimation = newIndex;
          ActiveAnimation("default");
     }
+    public abstract void StopAnimations();
 
     public void RewindAndActiveAnimation()
     {
@@ -59,7 +60,6 @@ public abstract class BaseDoAnimationController : MonoBehaviour
         transform.DOKill();
     }
 
-    public void StopAnimations()=> transform.DOKill();
 
     public List<AnimationAssistant> GetList() => listAux;
 
