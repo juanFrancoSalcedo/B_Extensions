@@ -24,6 +24,14 @@ namespace B_Extensions.DebugHandler
                 cardsLog.Add(clone);
         }
 
+        public void Clean() 
+        {
+            for (int i = 0; i < content.childCount; i++)
+            {
+                Destroy(content.GetChild(i).gameObject);
+            }
+        }
+
         private void OnDestroy()
         {
             Application.logMessageReceived -= ReceiveLog;
