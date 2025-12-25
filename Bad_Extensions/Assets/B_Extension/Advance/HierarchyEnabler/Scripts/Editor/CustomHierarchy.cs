@@ -111,7 +111,7 @@ namespace B_Extensions.HierarchyStates
             {
                 Rect r = new Rect(_selectionRect);
                 r.height = 16;
-                r.x = _selectionRect.xMax -5;
+                r.x = _selectionRect.xMax -20;
                 r.width = 20;
 
                 if (GUI.Button(r, stateItem.stateEnable ? "O" : ""))
@@ -142,7 +142,7 @@ namespace B_Extensions.HierarchyStates
             if (string.IsNullOrEmpty(smallText))
                 return;
 
-            Rect textRect = new Rect(selectionRect.xMax - 30, selectionRect.y+4, 50, selectionRect.height);            
+            Rect textRect = new Rect(selectionRect.xMax - 50, selectionRect.y+4, 50, selectionRect.height);            
             GUI.Label(textRect, smallText, smallTextStyle);
         }
 
@@ -169,7 +169,7 @@ namespace B_Extensions.HierarchyStates
                 return;
 
             // text pos
-            Rect textRect = new Rect(selectionRect.xMax - 30, selectionRect.y-4, 50, selectionRect.height);
+            Rect textRect = new Rect(selectionRect.xMax - 50, selectionRect.y-4, 50, selectionRect.height);
             GUI.Label(textRect, smallText, smallTextStyle);
         }
 
