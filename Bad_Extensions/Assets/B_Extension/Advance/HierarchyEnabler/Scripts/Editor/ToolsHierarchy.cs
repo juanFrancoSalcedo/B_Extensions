@@ -7,7 +7,7 @@ namespace B_Extensions.HierarchyStates
 {
     public class ToolsHierarchy
     {
-        [MenuItem("B_Extensions/Navigation Hierarchy/Restore Object In Hierarchy %#e")]
+        [MenuItem("B_Extensions/Hierarchy Extension/Restore Object In Hierarchy %#e")]
         private static void CallSearch()
         {
             CustomHierarchy.SearchEnablers();

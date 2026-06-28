@@ -10,6 +10,7 @@ public class PlayerPrefsEventListener : MonoBehaviour
     [SerializeField] protected string key;
     [SerializeField] protected UnityEvent onExistKey;
     [SerializeField] protected UnityEvent onDoesntExistKey;
+
     public event System.Action<bool> OnExistKey;
 
     protected void OnEnable()
@@ -36,14 +37,15 @@ public class PlayerPrefsEventListener : MonoBehaviour
         }
     }
 
-    private IEnumerator DoPeriodicCheck() 
+    private IEnumerator DoPeriodicCheck()
     {
-        while (periodic) 
+        while (periodic)
         {
             yield return new WaitForSecondsRealtime(1f);
             CheckExist();
         }
     }
+
     public void CheckExist()
     {
         if (PlayerPrefs.HasKey(key))
@@ -52,6 +54,9 @@ public class PlayerPrefsEventListener : MonoBehaviour
             onExistKey?.Invoke();
         }
         else
-            onExistKey?.Invoke();
+        {
+            OnExistKey?.Invoke(false);
+            onDoesntExistKey?.Invoke();
+        }
     }
 }

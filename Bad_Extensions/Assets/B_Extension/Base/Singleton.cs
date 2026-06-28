@@ -39,11 +39,14 @@ namespace B_Extensions
 
         protected virtual void Awake()
         {
-            if (!dontDestroyOnLoad) return;
-            if (FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length > 1)
-                Destroy(gameObject);
-            else
+            if (dontDestroyOnLoad)
+            { 
                 DontDestroyOnLoad(gameObject);
+                transform.parent = null;
+            }
+
+            if (FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length > 1 && !ReferenceEquals(Instance,this))
+                Destroy(gameObject);
         }
     }
 }

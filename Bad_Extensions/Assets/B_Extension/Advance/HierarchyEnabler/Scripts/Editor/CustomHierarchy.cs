@@ -39,10 +39,15 @@ namespace B_Extensions.HierarchyStates
         static void HierarchyItemCB(int instanceID, Rect selectionRect)
         {
             DrawHierarchyColor(instanceID, selectionRect);
+#if UNITY_6000_1_OR_NEWER
+            GameObject obj = EditorUtility.EntityIdToObject(instanceID) as GameObject;
+#else
             GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+#endif            
             DrawDisabledCompo(selectionRect,obj);
             DrawEnabledCompo( selectionRect, obj);
             DrawEnablerRemains(instanceID, selectionRect);
+
         }
 
         private static void DrawHierarchyColor(int _instanceID, Rect _selectionRect)

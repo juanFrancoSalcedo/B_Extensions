@@ -12,7 +12,7 @@ public class AnimCharScaleFade : ITypingAnimaStrategy
         {
             if (!animator.textInfo.characterInfo[i].isVisible)
                 continue;
-            sequence.Append(animator.DOScaleChar(i,1, timePerChar));
+            //sequence.Append(animator.DOScaleChar(i,1, timePerChar));
             sequence2.Append(animator.DOFadeChar(i, 1, timePerChar));
         }
     }
@@ -29,7 +29,7 @@ public class AnimCharScaleFade : ITypingAnimaStrategy
                 continue;
 
             animator.DOFadeChar(i, 0, 0);
-            animator.DOScaleChar(i, 10, 0);
+            //animator.DOScaleChar(i, 10, 0);
         }
     }
 }

@@ -49,7 +49,15 @@ public class EditorDoAnimator : BaseEditorAnimator
             EditorGUILayout.EndHorizontal();
             GUI.color = Color.white;
             auxArg.targetPosition = EditorGUILayout.Vector3Field("Target Position", auxArg.targetPosition);
-            auxArg.atractor = (Transform)EditorGUILayout.ObjectField("Atractor", auxArg.atractor, typeof(Transform));
+            auxArg.atractor = (Transform)EditorGUILayout.ObjectField(new GUIContent("Atractor"),auxArg.atractor,typeof(Transform),true);
+
+            //auxArg.atractor = EditorGUILayout.ObjectField<Transform>("Atractor",auxArg.atractor,allowSceneObjects: true);
+
+            //GUILayoutOption[] ddd = new GUILayoutOption[]
+            //{
+            //    new , 
+            //};
+
         }
 
         EditorGUILayout.EndVertical();//---- quadPos
@@ -77,7 +85,10 @@ public class EditorDoAnimator : BaseEditorAnimator
         auxArg.displayRotation = EditorGUILayout.Toggle(auxArg.displayRotation);
         EditorGUILayout.EndHorizontal();
         if (auxArg.displayRotation)
+        {
+            auxArg.rotationType = (RotateMode)EditorGUILayout.EnumPopup("Rotation type", auxArg.rotationType);
             auxArg.targetRotation = EditorGUILayout.Vector3Field("Target Rotation", auxArg.targetRotation);
+        }
         EditorGUILayout.EndVertical();//---- quadPos
 
     }
