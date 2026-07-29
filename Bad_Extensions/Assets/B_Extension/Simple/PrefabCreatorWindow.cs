@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 public class PrefabCreatorWindow : EditorWindow
 {
     private GameObject selectedObject;
@@ -248,3 +249,4 @@ public class PrefabCreatorQuickActions
         }
     }
 }
+#endif

@@ -17,36 +17,27 @@ public class BadInterfaceDrawer : PropertyDrawer
 
         EditorGUI.BeginProperty(position, label, property);
 
-        // Obtenemos el valor actual como un `Object`
         UnityEngine.Object currentObject = property.objectReferenceValue;
-        property.objectReferenceValue = EditorGUI.ObjectField(position, label, currentObject, typeof(UnityEngine.Object), true);
+        property.objectReferenceValue = EditorGUI.ObjectField(position, label, currentObject, fieldInfo.FieldType, true);
 
-        // Validar que el objeto asignado implemente la interfaz requerida
         if (property.objectReferenceValue != null)
         {
             bool isValid = false;
+            var obj = property.objectReferenceValue;
 
-            // Si el objeto es un GameObject, busca en sus componentes
-            if (property.objectReferenceValue is GameObject gameObject)
+            if (obj is GameObject go)
             {
-                Component[] components = gameObject.GetComponents<Component>();
-                foreach (var component in components)
-                {
-                    if (requiredType.IsInstanceOfType(component))
-                    {
-                        isValid = true;
-                        break;
-                    }
-                }
+                isValid = go.GetComponent(requiredType) != null;
             }
-
-            // Si no es un GameObject, verifica directamente
-            else if (requiredType.IsInstanceOfType(property.objectReferenceValue))
+            else if (obj is Component comp)
+            {
+                isValid = comp.gameObject.GetComponent(requiredType) != null;
+            }
+            else if (requiredType.IsInstanceOfType(obj))
             {
                 isValid = true;
             }
 
-            // Si no se encontró la interfaz, muestra un error y limpia el valor
             if (!isValid)
             {
                 property.objectReferenceValue = null;

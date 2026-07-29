@@ -65,11 +65,18 @@ public class AnimationUIController : BaseDoAnimationController
                 SetLoops(currentAux.loops)
                 );
         if (currentAux.displayColor)
-            sequence.Insert(0, image.DOColor(currentAux.colorTarget, timeAnim).
-                SetEase(currentAux.animationCurve).
-                SetDelay(currentAux.delay).
-                SetLoops(currentAux.loops)
-                );
+        {
+            // Verificar que el componente Image exista antes de crear el tween de color,
+            // de lo contrario DOTween lanzará "NULL target/property" y matará el tween.
+            if (image != null)
+            {
+                sequence.Insert(0, image.DOColor(currentAux.colorTarget, timeAnim).
+                    SetEase(currentAux.animationCurve).
+                    SetDelay(currentAux.delay).
+                    SetLoops(currentAux.loops)
+                    );
+            }
+        }
         if (currentAux.displaySizeDelta)
             sequence.Insert(0, rectTransform.DOSizeDelta(currentAux.targetSizeDelta, timeAnim).
                 SetEase(currentAux.animationCurve).
