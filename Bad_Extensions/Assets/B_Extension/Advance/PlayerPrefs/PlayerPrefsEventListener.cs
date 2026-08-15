@@ -16,25 +16,18 @@ public class PlayerPrefsEventListener : MonoBehaviour
     protected void OnEnable()
     {
         if (onEnable)
-        {
             CheckExist();
-        }
 
         if (periodic)
             StartCoroutine(DoPeriodicCheck());
     }
 
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-    }
+    private void OnDisable() => StopAllCoroutines();
 
     protected void Awake()
     {
         if (onAwake)
-        {
             CheckExist();
-        }
     }
 
     private IEnumerator DoPeriodicCheck()
