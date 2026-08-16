@@ -10,7 +10,7 @@ namespace B_Extensions
 
     public class WindowSearchPlayerPrefsPosible : EditorWindow
     {
-        [MenuItem("B_Extensions/PlayerPrefs Elimination")]
+        [MenuItem("B_Extensions/PlayerPrefs Wizard")]
         public static void ShowWindow()
         {
             //PlayerPrefs.SetString(KeyStorage.PlayersTest, "Hola Mundo");
