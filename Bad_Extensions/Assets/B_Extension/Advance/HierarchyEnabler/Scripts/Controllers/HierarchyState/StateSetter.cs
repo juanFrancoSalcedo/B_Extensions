@@ -1,55 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
-using UnityEditor;
-#if UNITY_EDITOR
-using UnityEditor.SceneManagement;
-#endif
 
 namespace B_Extensions.HierarchyStates
 {
+    /// <summary>
+    /// Componente que marca un GameObject como gestionado por el Hierarchy Enabler.
+    /// - Unity 6.6+: columna "State" en la Hierarchy (Botón "O" + color) [StateHierarchyColumn].
+    ///   - Unity &lt;= 6000.5: botón "O" IMGUI por fila [CustomHierarchy].
+    /// - Ctrl+E (menu GameObject/State/Add): añade este componente a la selección.
+    /// - Ctrl+Shift+E: restaura todos los StateSetter al estado guardado.
+    /// </summary>
     [DisallowMultipleComponent]
     public class StateSetter : MonoBehaviour
     {
         public bool stateEnable = false;
         [SerializeField] private float timeDelay = 0f;
-        [SerializeField] public StateReference reference = null;
-        public static event System.Action<StateReference> OnEnabled;
-        private void OnValidate()
-        {
-            #if UNITY_EDITOR
-            if (reference == null)
-                reference = new StateReference();
-            if (string.IsNullOrEmpty(reference.UniqueId) ||
-                string.IsNullOrEmpty(reference.sceneName) ||
-                reference.handler == null)
-            {
-                reference.UpdateElementToken();
-                reference.UpdateElementScene();
-                reference.UpdateElementHandler(this);
-                
-                    EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
-            }
-            #endif
-        }
-
-        private void OnEnable()
-        {
-            if (!stateEnable)
-                OnEnabled?.Invoke(reference);
-        }
 
         public void EnableOnHierarchy() => gameObject.SetActive(stateEnable);
 
-        public void SetActive(bool active)
+        public void SetState(bool active)
         {
             if (active)
                 gameObject.SetActive(active);
             else
-                SetActiveFalse();
+                SetStateFalse();
         }
 
-        private void SetActiveFalse()
+        private void SetStateFalse()
         {
             if (gameObject.activeInHierarchy)
                 StartCoroutine(WaitDisable());
@@ -59,18 +36,6 @@ namespace B_Extensions.HierarchyStates
         {
             yield return new WaitForSeconds(timeDelay);
             gameObject.SetActive(false);
-        }
-    }
-
-    public class StateHierachyEnabler 
-    {
-
-        public static void SearchAndEnableInParent(Transform parent) 
-        {
-            for (int i = 0; i < parent.childCount; i++)
-            {
-
-            }
         }
     }
 }

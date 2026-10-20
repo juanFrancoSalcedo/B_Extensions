@@ -1,199 +1,131 @@
-﻿using UnityEditor;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
-using System.Collections.Generic;
 
 namespace B_Extensions.HierarchyStates
 {
-
     [InitializeOnLoad]
     class CustomHierarchy
     {
+        static readonly Dictionary<int, StateSetter> s_StateMap = new Dictionary<int, StateSetter>();
+        static readonly Dictionary<int, ColorHierarchySetter> s_ColorMap = new Dictionary<int, ColorHierarchySetter>();
+#if !UNITY_6000_6_OR_NEWER
+        static int s_Tick;
+#endif
 
-#if UNITY_EDITOR
-
-        public static StateSetter[] stateObjects;
-        static ColorHierarchySetter[] colorObjects;
         static CustomHierarchy()
         {
-            EditorApplication.update += UpdateCB;
+#if UNITY_6000_6_OR_NEWER
+            EditorApplication.hierarchyWindowItemByEntityIdOnGUI += HierarchyItemByEntityIdCB;
+#else
             EditorApplication.hierarchyWindowItemOnGUI += HierarchyItemCB;
+            EditorApplication.hierarchyChanged += RebuildMaps;
+            EditorApplication.update += PollRebuildMaps;
+            RebuildMaps();
+#endif
         }
 
-        static void UpdateCB()
+#if UNITY_6000_6_OR_NEWER
+        static void HierarchyItemByEntityIdCB(EntityId entityId, Rect selectionRect)
         {
-            stateObjects = Resources.FindObjectsOfTypeAll<StateSetter>();
-            colorObjects = Resources.FindObjectsOfTypeAll<ColorHierarchySetter>();
+            GameObject obj = EditorUtility.EntityIdToObject(entityId) as GameObject;
+            if (obj == null) return;
+
+            DrawHierarchyColor(selectionRect, obj.GetComponent<ColorHierarchySetter>());
+            DrawStateToggle(selectionRect, obj.GetComponent<StateSetter>(), obj);
         }
+#else
+        static void PollRebuildMaps()
+        {
+            if (++s_Tick < 60) return;
+            s_Tick = 0;
+            RebuildMaps();
+        }
+
+        static void RebuildMaps()
+        {
+            s_StateMap.Clear();
+            s_ColorMap.Clear();
+
+            StateSetter[] states = Resources.FindObjectsOfTypeAll<StateSetter>();
+            foreach (var s in states)
+            {
+                if (s != null && s.gameObject.scene.IsValid())
+                    s_StateMap[s.gameObject.GetInstanceID()] = s;
+            }
+
+            ColorHierarchySetter[] colors = Resources.FindObjectsOfTypeAll<ColorHierarchySetter>();
+            foreach (var c in colors)
+            {
+                if (c != null && c.gameObject.scene.IsValid())
+                    s_ColorMap[c.gameObject.GetInstanceID()] = c;
+            }
+        }
+
+        static void HierarchyItemCB(int instanceID, Rect selectionRect)
+        {
+            if (s_ColorMap.TryGetValue(instanceID, out ColorHierarchySetter colorItem))
+                DrawHierarchyColor(selectionRect, colorItem);
+
+            if (s_StateMap.TryGetValue(instanceID, out StateSetter stateItem))
+                DrawStateToggle(selectionRect, stateItem, stateItem.gameObject);
+        }
+#endif
 
         public static void SearchEnablers()
         {
-            foreach (var item in stateObjects)
-            { 
+            var stateSetters = Resources.FindObjectsOfTypeAll<StateSetter>();
+            foreach (var item in stateSetters)
+            {
+                if (!item.gameObject.scene.IsValid()) continue;
+
                 item.EnableOnHierarchy();
                 EditorUtility.SetDirty(item);
                 EditorSceneManager.MarkSceneDirty(item.gameObject.scene);
             }
         }
 
-        static void HierarchyItemCB(int instanceID, Rect selectionRect)
+        private static void DrawHierarchyColor(Rect selectionRect, ColorHierarchySetter colorItem)
         {
-            DrawHierarchyColor(instanceID, selectionRect);
-#if UNITY_6000_1_OR_NEWER
-            GameObject obj = EditorUtility.EntityIdToObject(instanceID) as GameObject;
-#else
-            GameObject obj = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
-#endif            
-            DrawDisabledCompo(selectionRect,obj);
-            DrawEnabledCompo( selectionRect, obj);
-            DrawEnablerRemains(instanceID, selectionRect);
+            if (colorItem == null) return;
 
+            Rect toDrawOne = selectionRect;
+            Rect toDrawFill = selectionRect;
+            Rect toDrawThree = selectionRect;
+
+            toDrawOne.height = toDrawThree.height = 1;
+            toDrawFill.height = 8;
+            toDrawFill.x += 50;
+
+            toDrawFill.y += 4;
+            toDrawThree.y += 16;
+
+            var colorFull = colorItem.colorInHierarchy;
+            colorFull.a = 0.08f;
+
+            EditorGUI.DrawRect(toDrawOne, colorItem.colorInHierarchy);
+            EditorGUI.DrawRect(toDrawFill, colorFull);
+            EditorGUI.DrawRect(toDrawThree, colorItem.colorInHierarchy);
         }
 
-        private static void DrawHierarchyColor(int _instanceID, Rect _selectionRect)
+        private static void DrawStateToggle(Rect selectionRect, StateSetter stateItem, GameObject gameObject)
         {
-            if (!TryGetColorSetter()) return;
+            if (stateItem == null) return;
 
-            ColorHierarchySetter colorItem = null;
+            Rect buttonRect = new Rect(selectionRect);
+            buttonRect.height = 16;
+            buttonRect.x = selectionRect.xMax - 20;
+            buttonRect.width = 20;
 
-            foreach (ColorHierarchySetter item in colorObjects)
+            if (GUI.Button(buttonRect, stateItem.stateEnable ? "O" : ""))
             {
-                if (item != null && item.gameObject.GetInstanceID().Equals(_instanceID))
-                {
-                    colorItem = item;
-                    break;
-                }
-            }
-
-            if (colorItem != null)
-            {
-                Rect rectLeft = _selectionRect;
-                Rect toDrawOne = rectLeft;
-                Rect toDrawFill = rectLeft;
-                Rect toDrawThree = rectLeft;
-
-                toDrawOne.height =  toDrawThree.height  = 1;
-                toDrawFill.height = 8;
-                toDrawOne.x += 0;
-                toDrawFill.x += 50;
-                toDrawThree.x += 0;
-
-                toDrawOne.y += 0;
-                toDrawFill.y += 4;
-                toDrawThree.y += 16;
-
-                rectLeft.width = _selectionRect.width*2;
-                rectLeft.height = 2;
-
-                var colorFull = colorItem.colorInHierarchy;
-                colorFull.a = 0.08f;
-
-                EditorGUI.DrawRect(toDrawOne, colorItem.colorInHierarchy);
-                EditorGUI.DrawRect(toDrawFill, colorFull);
-                EditorGUI.DrawRect(toDrawThree, colorItem.colorInHierarchy);
+                Undo.RecordObject(stateItem, "Toggle State");
+                stateItem.stateEnable = !stateItem.stateEnable;
+                stateItem.EnableOnHierarchy();
+                EditorUtility.SetDirty(stateItem);
+                EditorSceneManager.MarkSceneDirty(gameObject.scene);
             }
         }
-
-        private static void DrawEnablerRemains(int _instanceID, Rect _selectionRect)
-        {
-            if (!TryGetStateSetter()) return;
-
-            StateSetter stateItem = null;
-
-            if (TryGetStateSetter())
-            {
-                foreach (StateSetter item in stateObjects)
-                {
-                    if (item != null && item.gameObject.GetInstanceID().Equals(_instanceID))
-                    {
-                        stateItem = item;
-                        break;
-                    }
-                }
-            }
-
-            if (stateItem != null)
-            {
-                Rect r = new Rect(_selectionRect);
-                r.height = 16;
-                r.x = _selectionRect.xMax -20;
-                r.width = 20;
-
-                if (GUI.Button(r, stateItem.stateEnable ? "O" : ""))
-                    stateItem.stateEnable = !stateItem.stateEnable;
-            }
-        }
-
-        private static void DrawEnabledCompo(Rect selectionRect, GameObject obj)
-        {
-            // Obtén el objeto asociado al ID
-            
-            if (obj == null) return;
-            string smallText = "";
-            GUIStyle smallTextStyle = null;
-
-            if (obj.GetComponent<OnEnableEventHandler>() != null)
-            {
-                smallText = "Enab";
-
-                smallTextStyle = new GUIStyle(EditorStyles.label)
-                {
-                    fontSize = 7,
-                    alignment = TextAnchor.MiddleCenter,
-                    normal = { textColor = Color.cyan}
-                };
-            }
-
-            if (string.IsNullOrEmpty(smallText))
-                return;
-
-            Rect textRect = new Rect(selectionRect.xMax - 50, selectionRect.y+4, 50, selectionRect.height);            
-            GUI.Label(textRect, smallText, smallTextStyle);
-        }
-
-        private static void DrawDisabledCompo(Rect selectionRect, GameObject obj)
-        {
-            if (obj == null) return;
-            string smallText = "";
-
-            GUIStyle smallTextStyle = null;
-
-            if (obj.GetComponent<OnDisableEventHandler>() != null)
-            {
-                smallText = "Disa";
-
-                smallTextStyle = new GUIStyle(EditorStyles.label)
-                {
-                    fontSize = 7,
-                    alignment = TextAnchor.MiddleCenter,
-                    normal = { textColor = Color.black }
-                };
-            }
-
-            if (string.IsNullOrEmpty(smallText))
-                return;
-
-            // text pos
-            Rect textRect = new Rect(selectionRect.xMax - 50, selectionRect.y-4, 50, selectionRect.height);
-            GUI.Label(textRect, smallText, smallTextStyle);
-        }
-
-
-        static bool TryGetStateSetter()
-        {
-            if (stateObjects == null)
-                return false;
-            else
-                return true;
-        }
-
-        static bool TryGetColorSetter()
-        {
-            if (colorObjects == null)
-                return false;
-            else
-                return true;
-        }
-#endif
     }
 }

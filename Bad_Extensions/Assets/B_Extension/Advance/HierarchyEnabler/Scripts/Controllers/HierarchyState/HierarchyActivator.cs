@@ -1,4 +1,3 @@
-﻿using System;
 using UnityEngine;
 
 namespace B_Extensions.HierarchyStates
@@ -8,27 +7,26 @@ namespace B_Extensions.HierarchyStates
     {
         public void RestoreObjectsByParent(Transform parent, bool justChildrens)
         {
-            var compon = parent.GetComponentsInChildren<StateSetter>();
-            Array.ForEach(compon, c => {
-                if(!ReferenceEquals(c, parent.GetComponent<StateSetter>()))
-                    c.EnableOnHierarchy();
-                else if(!justChildrens)
-                    c.EnableOnHierarchy();
-            });
+            var compon = parent.GetComponentsInChildren<StateSetter>(true);
+            foreach (var c in compon)
+            {
+                if (c.transform == parent && justChildrens) continue;
+                c.EnableOnHierarchy();
+            }
         }
 
         
         public void RestoreObjects()
         {
-            StateSetter[] compon = null;
-#if UNITY_2019
-            compon = Resources.FindObjectsOfTypeAll<StateSetter>();
-#elif UNITY_6000
-            compon = FindObjectsByType<StateSetter>(FindObjectsInactive.Include,FindObjectsSortMode.InstanceID);
+#if UNITY_6000_6_OR_NEWER
+            StateSetter[] compon = FindObjectsByType<StateSetter>(FindObjectsInactive.Include);
+#elif UNITY_2023_1_OR_NEWER
+            StateSetter[] compon = FindObjectsByType<StateSetter>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 #else
-            compon = FindObjectsOfType<StateSetter>(true);
+            StateSetter[] compon = FindObjectsOfType<StateSetter>(true);
 #endif
-            Array.ForEach(compon, c => c.EnableOnHierarchy());
+            foreach (var c in compon)
+                c.EnableOnHierarchy();
         }
     }
 }
